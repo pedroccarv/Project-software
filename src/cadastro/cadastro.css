@@ -1,0 +1,116 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #FF6E0142; /* Cor de fundo geral */
+}
+
+/* Estilização da seção de cadastro */
+.cadastro {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background-color: #fce3d2; /* Cor de fundo para a seção direita */
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilização da seção "Bem-vindo" */
+.bem-vindo {
+  flex: 1;
+  background: url('/mnt/data/image.png') no-repeat center center/cover;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  color: #fff;
+  text-align: center;
+}
+
+.bem-vindo h1 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.bem-vindo h2 {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.btn-entrar {
+  padding: 10px 20px;
+  font-size: 18px;
+  color: #fff;
+  background-color: transparent;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Estilização da seção "Criar Conta" */
+.criar-conta {
+  flex: 1;
+  padding: 40px 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.criar-conta h1 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.criar-conta h2 {
+  font-size: 16px;
+  margin-bottom: 30px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+input {
+  margin-bottom: 20px;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.btn-cadastrar {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #f36b3b;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-cadastrar:hover {
+  background-color: #e65a2b;
+}
+
+p {
+  margin-top: 20px;
+  font-size: 14px;
+  text-align: center;
+}
+
+p a {
+  color: #f36b3b;
+  text-decoration: none;
+}
+
+p a:hover {
+  text-decoration: underline;
+}
