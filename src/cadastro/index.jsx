@@ -14,6 +14,8 @@ function Cadastro() {
 
     return (
         <div className="container">
+            <img src="src/images/logo.png" alt="" width="60%" />
+            <span></span>
             <div className="cadastro">
                 <h1>Crie uma conta</h1>
                 <form onSubmit={handleSubmit}>
