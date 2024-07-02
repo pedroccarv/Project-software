@@ -4,39 +4,51 @@ import { Link } from 'react-router-dom';
 
 function Cadastro() {
     const [email, setEmail] = useState('');
+    const [verifyEmail, setVerifyEmail] = useState('');
     const [senha, setSenha] = useState('');
-    const [lembrar, setLembrar] = useState(false);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // Aqui você pode adicionar a lógica para lidar com o cadastro
+    };
 
     return (
-            <div className="container">
-                <div className="cadastro">
-                    <div className="bem-vindo">
-                        <h1>Bem-vindo de volta!</h1>
-                        <h2>Acesse sua conta agora mesmo</h2>
-                        <img src="/path/to/your/image.png" alt="Volleyball" className="volleyball-image" />
-                        <button className="btn-entrar">Entrar</button>
-                    </div>
-                    <div className="criar-conta">
-                        <h1>Criar Sua Conta</h1>
-                        <h2>Preencha seus dados</h2>
-                        <form>
-                            <label htmlFor="opcao">SELECIONE UMA OPÇÃO</label>
-                            <input type="text" name="opcao" id="opcao" />
-                            <label htmlFor="nome">NOME</label>
-                            <input type="text" name="nome" id="nome" />
-                            <label htmlFor="email">EMAIL</label>
-                            <input type="text" name="email" id="email" />
-                            <label htmlFor="telefone">Numero de telefone</label>
-                            <input type="text" name="telefone" id="telefone" />
-                            <label htmlFor="senha">SENHA</label>
-                            <input type="password" name="senha" id="senha" />
-                            <button type="submit" className="btn-cadastrar">Cadastrar</button>
-                            <p>Já tem uma conta? <Link to="/login">Faça login aqui</Link></p>
-                        </form>
-                    </div>
-                </div>
+        <div className="container">
+            <div className="cadastro">
+                <h1>Crie uma conta</h1>
+                <form onSubmit={handleSubmit}>
+                    <input 
+                        type="email" 
+                        placeholder="E-mail" 
+                        value={email} 
+                        onChange={(e) => setEmail(e.target.value)} 
+                        required 
+                    />
+                    <input 
+                        type="email" 
+                        placeholder="Verifique seu e-mail" 
+                        value={verifyEmail} 
+                        onChange={(e) => setVerifyEmail(e.target.value)} 
+                        required 
+                    />
+                    <input 
+                        type="password" 
+                        placeholder="Senha" 
+                        value={senha} 
+                        onChange={(e) => setSenha(e.target.value)} 
+                        required 
+                    />
+                    <button type="submit" className="btn-cadastrar">Criar perfil gratuito</button>
+                </form>
+                <p className="terms">
+                    Ao se registrar, você está de acordo com nossos <a href="#">termos e condições</a> e confirma estar ciente de nossa <a href="#">política de privacidade</a>.
+                </p>
+                <p className="login">
+                    Já tem uma conta? <Link to="/login">Faça seu login!</Link>
+                </p>
             </div>
-        );
+        </div>
+    );
 }
 
 export default Cadastro;
