@@ -1,0 +1,75 @@
+.login-container {
+  padding: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+img{
+  display: block; 
+  margin-left: auto; 
+  margin-right: auto;
+}
+span{
+  display: block;
+  width: 100%;
+  height: 2px;
+  border-bottom: 0.5px solid #DCDFE3;
+  margin: 20px 0; 
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+label {
+  margin-bottom: 10px;
+  color: black;
+}
+
+input[type="email"], input[type="password"] {
+  width: 100%;
+  height: 40px;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+input[type="checkbox"] {
+  margin-bottom: 20px;
+}
+
+button {
+  width: 100%;
+  height: 40px;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background-color: #87CEEB;
+  color: #FFFFFF;
+  cursor: pointer;
+}
+
+
+p {
+  text-align: center;
+  margin-top: 20px;
+}
+
+a {
+  text-decoration: none;
+  color: #87CEEB;
+}
+
+a:hover {
+  color: #66CCCC;
+}
