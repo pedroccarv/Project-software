@@ -1,0 +1,8 @@
+{
+    "partidas": [
+      { "id": 1, "nome": "Partida 1", "data": "2024-07-10", "local": "Local 1", "tipoEsporte": "Futebol" },
+      { "id": 2, "nome": "Partida 2", "data": "2024-07-12", "local": "Local 2", "tipoEsporte": "Basquete" },
+      { "id": 3, "nome": "Partida 3", "data": "2024-07-15", "local": "Local 3", "tipoEsporte": "Vôlei" }
+    ]
+  }
+  
