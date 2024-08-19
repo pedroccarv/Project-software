@@ -18,20 +18,21 @@ function UploadImagem() {
             setUploadStatus('Por favor, selecione uma imagem.');
             return;
         }
-
+    
         const formData = new FormData();
         formData.append('imagem', image);
-
+    
         try {
-            const response = await fetch('http://localhost:5000/upload-imagem', {
+            const response = await fetch('http://localhost:5174/upload-imagem', {
                 method: 'POST',
                 body: formData,
             });
-
+    
             const result = await response.json();
-
+    
             if (result.success) {
-                setUploadStatus(`Imagem enviada com sucesso! URL: ${result.imageUrl}`);
+                setUploadStatus(`Imagem enviada com sucesso!`);
+                localStorage.setItem('uploadedImageUrl', result.imageUrl); // Armazena a URL da imagem
             } else {
                 setUploadStatus(`Erro ao enviar a imagem: ${result.message}`);
             }
@@ -39,6 +40,7 @@ function UploadImagem() {
             setUploadStatus(`Erro ao conectar ao servidor: ${error.message}`);
         }
     };
+    
 
     return (
     <div className="rotas">
@@ -58,6 +60,7 @@ function UploadImagem() {
     <Link to="/upload-imagem" className="link-rota">Imagem</Link>
     <Link to="/avaliacao-partida" className="link-rota">Avaliacao partida</Link>
     <Link to="/convidar-amigos" className="link-rota">Convidar amigos</Link>
+    <Link to="/imagem" className="link-rota">Imagem</Link>
         <div className="upload-imagem-container">
             <input type="file" onChange={handleImageChange} />
             {preview && <img src={preview} alt="Pré-visualização" />}
