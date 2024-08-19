@@ -17,6 +17,7 @@ import UploadImagem from '../components/UploadImagem';
 import AvaliacaoPartida from '../components/AvaliacaoPartida';
 import ConvidarAmigos from '../components/ConvidarAmigos';
 import HistoricoConquistas from '../components/HistoricoConquistas';
+import Imagem from '../components/Imagem'
 
 function AppRoutes() {
   return (
@@ -40,6 +41,7 @@ function AppRoutes() {
         <Route path="/avaliacao-partida" element={<AvaliacaoPartida />} />
         <Route path="/convidar-amigos" element={<ConvidarAmigos />} />
         <Route path="/historico-conquistas" element={<HistoricoConquistas />} />
+        <Route path="/imagem" element={<Imagem/>} />
       </Routes>
     </BrowserRouter>
   );
