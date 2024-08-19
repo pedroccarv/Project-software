@@ -31,6 +31,14 @@ app.post('/api/send-email', (req, res) => {
   });
 });
 
-app.listen(3000, () => {
+app.listen(5174, () => {
   console.log('Servidor rodando na porta 3000');
 });
+app.post('/upload-imagem', (req, res) => {
+  // Supondo que o processamento da imagem foi bem-sucedido
+  res.json({ success: true, imageUrl: 'http://localhost:5173/uploads/imagem.jpg' });
+
+  // Ou, em caso de erro:
+  // res.status(500).json({ success: false, message: 'Erro ao processar a imagem' });
+});
+
