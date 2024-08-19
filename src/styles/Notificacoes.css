@@ -1,0 +1,18 @@
+.notificacoes-container {
+    text-align: center;
+    margin: 50px auto;
+}
+
+button {
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #0b7dda;
+}
