@@ -18,6 +18,7 @@ import AvaliacaoPartida from '../components/AvaliacaoPartida';
 import ConvidarAmigos from '../components/ConvidarAmigos';
 import HistoricoConquistas from '../components/HistoricoConquistas';
 import Imagem from '../components/Imagem'
+import Agendar from '../components/Agendarquadra'
 
 function AppRoutes() {
   return (
@@ -42,6 +43,7 @@ function AppRoutes() {
         <Route path="/convidar-amigos" element={<ConvidarAmigos />} />
         <Route path="/historico-conquistas" element={<HistoricoConquistas />} />
         <Route path="/imagem" element={<Imagem/>} />
+        <Route path="/agendar" element={<Agendar/>} />
       </Routes>
     </BrowserRouter>
   );
