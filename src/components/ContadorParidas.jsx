@@ -30,8 +30,10 @@ function ContadorPartidas() {
                 <Link to="/upload-imagem" className="link-rota">Imagem</Link>
                 <Link to="/avaliacao-partida" className="link-rota">Avaliacao partida</Link>
                 <Link to="/convidar-amigos" className="link-rota">Convidar amigos</Link>
+                <Link to="/contador-partidas" className="link-rota">Contador Partidas</Link>
                 <Link to="/imagem" className="link-rota">Imagem</Link>
-                <Link to="/imagem" className="link-rota">Imagem</Link>
+                
+
             </div>
             
             <h2>Contador de Partidas</h2>
