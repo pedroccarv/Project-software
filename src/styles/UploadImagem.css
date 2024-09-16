@@ -14,9 +14,9 @@ input[type="file"] {
 }
 
 img {
-    max-width: 100%;
+    /* max-width: 100%;
     margin-bottom: 15px;
-    border-radius: 8px;
+    border-radius: 8px; */
 }
 
 button {
@@ -31,3 +31,22 @@ button {
 button:hover {
     background-color: #e64a19;
 }
+
+.container-img {
+    display: flex;
+    flex-direction: column;
+}
+
+.imagens {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    
+}
+
+.imagens img {
+    width: 500px;
+    height: 500px;
+}
+
