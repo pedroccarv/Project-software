@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Mapa from '../components/Mapa';
+import '../styles/DetalhesPartida.css';
 
 function DetalhesPartida() {
   const { id } = useParams();
