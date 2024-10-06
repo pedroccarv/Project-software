@@ -1,38 +1,46 @@
+/* Contato.css */
 .container {
     padding: 20px;
-}
-
-h1 {
+    background-color: #f0f8ff; /* tom de azul leve */
+    min-height: 100vh;
+  }
+  
+  h1 {
+    font-size: 2rem;
+    color: #007acc;
     text-align: center;
     margin-bottom: 20px;
-}
-
-.contato-form {
+  }
+  
+  form {
     display: flex;
     flex-direction: column;
-    align-items: center;
-}
-
-input, textarea {
-    padding: 10px;
-    margin: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
     width: 100%;
-    max-width: 300px;
-}
-
-textarea {
-    height: 100px;
-}
-
-button {
-    background-color: #ffc107;
-    color: white;
+    max-width: 400px;
+    margin: auto;
+  }
+  
+  input, textarea {
     padding: 10px;
+    margin: 10px 0;
+    border: 2px solid #007acc;
+    border-radius: 5px;
+  }
+  
+  textarea {
+    min-height: 100px;
+  }
+  
+  button {
+    padding: 10px;
+    background-color: #007acc;
+    color: white;
     border: none;
-    border-radius: 4px;
-    font-size: 16px;
     cursor: pointer;
-    margin-top: 10px;
-}
+    border-radius: 5px;
+  }
+  
+  button:hover {
+    background-color: #005f99;
+  }
+  
