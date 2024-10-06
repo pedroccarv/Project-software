@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import '../styles/UploadImagem.css';
 import { Link } from 'react-router-dom';
-import TennisImage from '../imagens/tennis.png';
-import VoleiImage from '../imagens/voleidearei.png';
-import futvoleiImage from '../imagens/Futvolei.png';
+import TennisImage from '../images/tennis.png';
+import VoleiImage from '../images/voleideareia.png';
+import futvoleiImage from '../images/Futvolei.png';
 
 
 function UploadImagem() {
