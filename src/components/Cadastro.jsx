@@ -6,7 +6,6 @@ function Cadastro() {
   const [email, setEmail] = useState('');
   const [verifyEmail, setVerifyEmail] = useState('');
   const [senha, setSenha] = useState('');
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (email !== verifyEmail) {
