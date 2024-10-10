@@ -18,7 +18,8 @@ import AvaliacaoPartida from '../components/AvaliacaoPartida';
 import ConvidarAmigos from '../components/ConvidarAmigos';
 import HistoricoConquistas from '../components/HistoricoConquistas';
 import Agendar from '../components/Agendarquadra';
-import ContadorPartidas from '../components/ContadorPartidas'; 
+import ContadorPartidas from '../components/ContadorPartidas';
+import Usuario from '../components/Usuario'
 
 function AppRoutes() {
   return (
@@ -57,6 +58,7 @@ function AppRoutes() {
         
         {/* Agendamento de quadra */}
         <Route path="/agendar" element={<Agendar />} />
+        <Route path="/usuario" element={<Usuario />}/>
       </Routes>
     </BrowserRouter>
   );
