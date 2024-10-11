@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/cadastro.css';
 import api from '../services/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -19,7 +19,7 @@ function Cadastro() {
   const inputAge = useRef()
   const inputNome = useRef()
   const inputPassword = useRef()
-
+  const navigate = useNavigate();
   const toggleMenu = () => {
     setMenuAberto(!menuAberto);
   };
@@ -54,6 +54,8 @@ function Cadastro() {
         email: email,
         password: password,  // Certifique-se de que está enviando "password"
       });
+      alert("Usuário criado com sucesso!"); 
+      navigate('/login');  
     } catch (error) {
       console.error(error);
       alert("Erro ao criar usuário");
