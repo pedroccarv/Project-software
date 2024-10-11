@@ -101,4 +101,7 @@ node --watch server.js
 npx prisma generate
 npx prisma studio
 npx prisma db pull --force
+se der pau usar esses comandos
+npx prisma generate
+npx prisma db push
 */
