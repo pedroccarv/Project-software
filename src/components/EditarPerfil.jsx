@@ -11,10 +11,12 @@ function EditarPerfil() {
   });
 
   useEffect(() => {
+    const usuarioId = 1; // Exemplo: ID fixo do usuário; você pode obter isso de um contexto ou autenticação
+
     // Chamada à API para obter os dados do usuário
-    axios.get('/services/api.js')
+    axios.get(`/api/usuario/${usuarioId}`)
       .then(response => {
-        setUsuario(response.data);
+        setUsuario(response.data);  // Preenche os campos com os dados recebidos
       })
       .catch(error => {
         console.error("Houve um erro ao buscar os dados do usuário:", error);
@@ -28,8 +30,10 @@ function EditarPerfil() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const usuarioId = 1; // Exemplo: ID fixo do usuário; ajustar conforme necessário
+    
     // Chamada à API para atualizar os dados do usuário
-    axios.put('/api/usuario', usuario)
+    axios.put(`/api/usuario/${usuarioId}`, usuario)
       .then(response => {
         alert('Perfil atualizado com sucesso!');
       })
@@ -40,55 +44,56 @@ function EditarPerfil() {
 
   return (
     <div>
-    <div className="rotas">
-    <Link to="/login" className="link-rota">Login</Link>
-    <Link to="/cadastro" className="link-rota">Cadastro</Link>
-    <Link to="/editar-perfil" className="link-rota">Editar Perfil</Link>
-    <Link to="/mapa" className="link-rota">Mapa</Link>
-    <Link to="/favoritar-partida" className="link-rota">Partidas Favoritas</Link>
-    <Link to="/detalhes-partida" className="link-rota">Detalhes Partidas</Link>
-    <Link to="/cadastro-partida" className="link-rota">Cadastro Partidas</Link>
-    <Link to="/historico-partidas" className="link-rota">Historico Partidas</Link>
-    <Link to="/pagamento" className="link-rota">Pagamento</Link>
-    <Link to="/contato" className="link-rota">Contato</Link>
-    <Link to="/historico-conquistas" className="link-rota">Historico  conquistas</Link>
-    <Link to="/notificacoes" className="link-rota">Notificacoes</Link>
-    <Link to="/chat" className="link-rota">Chat</Link>
-    <Link to="/upload-imagem" className="link-rota">Imagem</Link>
-    <Link to="/avaliacao-partida" className="link-rota">Avaliacao partida</Link>
-    <Link to="/convidar-amigos" className="link-rota">Convidar amigos</Link>
-      </div>    
-    <div className="container">
-      <h1>Editar Perfil</h1>
-      <form onSubmit={handleSubmit} className="editar-form">
-        <input 
-          type="text" 
-          name="nome" 
-          placeholder="Nome" 
-          value={usuario.nome} 
-          onChange={handleChange} 
-          required 
-        />
-        <input 
-          type="email" 
-          name="email" 
-          placeholder="Email" 
-          value={usuario.email} 
-          onChange={handleChange} 
-          required 
-        />
-        <input 
-          type="password" 
-          name="senha" 
-          placeholder="Senha" 
-          value={usuario.senha} 
-          onChange={handleChange} 
-          required 
-        />
-        <button type="submit" className="btn-atualizar">Atualizar</button>
-      </form>
+      <div className="rotas">
+        <Link to="/login" className="link-rota">Login</Link>
+        <Link to="/cadastro" className="link-rota">Cadastro</Link>
+        <Link to="/editar-perfil" className="link-rota">Editar Perfil</Link>
+        <Link to="/mapa" className="link-rota">Mapa</Link>
+        <Link to="/favoritar-partida" className="link-rota">Partidas Favoritas</Link>
+        <Link to="/detalhes-partida" className="link-rota">Detalhes Partidas</Link>
+        <Link to="/cadastro-partida" className="link-rota">Cadastro Partidas</Link>
+        <Link to="/historico-partidas" className="link-rota">Historico Partidas</Link>
+        <Link to="/pagamento" className="link-rota">Pagamento</Link>
+        <Link to="/contato" className="link-rota">Contato</Link>
+        <Link to="/historico-conquistas" className="link-rota">Historico conquistas</Link>
+        <Link to="/notificacoes" className="link-rota">Notificacoes</Link>
+        <Link to="/chat" className="link-rota">Chat</Link>
+        <Link to="/upload-imagem" className="link-rota">Imagem</Link>
+        <Link to="/avaliacao-partida" className="link-rota">Avaliacao partida</Link>
+        <Link to="/convidar-amigos" className="link-rota">Convidar amigos</Link>
+      </div>
+
+      <div className="container">
+        <h1>Editar Perfil</h1>
+        <form onSubmit={handleSubmit} className="editar-form">
+          <input 
+            type="text" 
+            name="nome" 
+            placeholder="Nome" 
+            value={usuario.nome} 
+            onChange={handleChange} 
+            required 
+          />
+          <input 
+            type="email" 
+            name="email" 
+            placeholder="Email" 
+            value={usuario.email} 
+            onChange={handleChange} 
+            required 
+          />
+          <input 
+            type="password" 
+            name="senha" 
+            placeholder="Senha" 
+            value={usuario.senha} 
+            onChange={handleChange} 
+            required 
+          />
+          <button type="submit" className="btn-atualizar">Atualizar</button>
+        </form>
+      </div>
     </div>
-  </div>  
   );
 }
 
