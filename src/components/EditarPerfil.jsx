@@ -12,7 +12,7 @@ function EditarPerfil() {
 
   useEffect(() => {
     // Chamada à API para obter os dados do usuário
-    axios.get('/api/usuario')
+    axios.get('/services/api.js')
       .then(response => {
         setUsuario(response.data);
       })
