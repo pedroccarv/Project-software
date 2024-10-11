@@ -20,15 +20,24 @@ function Login() {
     setLembrar(event.target.checked);
   };
 
-  const handleEntrarClick = () => {
-    // Validação de email e senha
+  const handleEntrarClick = async (e) => {
+    e.preventDefault(); // Previne o comportamento padrão do formulário
     if (email && senha) {
-      // Redirecionamento para a página principal
-      <Link to="/"></Link>
+      try {
+        const response = await axios.post('/api/login', { email, password: senha });
+        // Armazena o ID do usuário ou token no localStorage
+        localStorage.setItem('userId', response.data.id);
+        alert('Login bem-sucedido!');
+        // Redireciona para a página principal
+        window.location.href = '/'; // Pode usar <Navigate to="/" /> se estiver usando react-router-dom v6
+      } catch (error) {
+        alert('Erro ao fazer login: ' + error.response.data.error);
+      }
     } else {
       alert('Preencha os campos de email e senha');
     }
   };
+  
 
   return (
     <div>
