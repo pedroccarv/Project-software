@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { GoogleLogin } from '@react-oauth/google';
 import { Link } from 'react-router-dom';
 import '../styles/Login.css';
+import api from '../services/api';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -21,17 +22,19 @@ function Login() {
   };
 
   const handleEntrarClick = async (e) => {
-    e.preventDefault(); // Previne o comportamento padrão do formulário
+    e.preventDefault();
     if (email && senha) {
       try {
-        const response = await axios.post('/api/login', { email, password: senha });
-        // Armazena o ID do usuário ou token no localStorage
-        localStorage.setItem('userId', response.data.id);
-        alert('Login bem-sucedido!');
-        // Redireciona para a página principal
-        window.location.href = '/'; // Pode usar <Navigate to="/" /> se estiver usando react-router-dom v6
+        const response = await api.post('/login', { email, password: senha });
+        if (response && response.data) {
+          localStorage.setItem('userId', response.data.id);
+          alert('Login bem-sucedido!');
+          window.location.href = '/';
+        } else {
+          throw new Error('Resposta inválida da API');
+        }
       } catch (error) {
-        alert('Erro ao fazer login: ' + error.response.data.error);
+        alert('Erro ao fazer login: ' + (error.response?.data?.error || error.message));
       }
     } else {
       alert('Preencha os campos de email e senha');
