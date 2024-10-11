@@ -10,7 +10,7 @@ datasource db {
 model User {
   id       String  @id @default(auto()) @map("_id") @db.ObjectId
   /// Multiple data types found: String: 75%, BigInt: 25% out of 4 sampled entries
-  age      Int
+  age      String
   email    String  @unique
   name     String
   password String?
