@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import '../styles/chat.css';
 import { Link } from 'react-router-dom';
 
-
 function Chat() {
     const [messages, setMessages] = useState([]);
     const [message, setMessage] = useState('');
@@ -28,7 +27,7 @@ function Chat() {
         if (message.trim() !== '') {
             const newMessage = {
                 text: message,
-                sender: 'Você', // Pode ser substituído por um ID de usuário real
+                sender: 'Você',
                 timestamp: new Date().toLocaleTimeString(),
             };
 
@@ -44,42 +43,52 @@ function Chat() {
     };
 
     return (
-        <div className="rotas">
-        <Link to="/login" className="link-rota">Login</Link>
-        <Link to="/cadastro" className="link-rota">Cadastro</Link>
-        <Link to="/editar-perfil" className="link-rota">Editar Perfil</Link>
-        <Link to="/mapa" className="link-rota">Mapa</Link>
-        <Link to="/favoritar-partida" className="link-rota">Partidas Favoritas</Link>
-        <Link to="/detalhes-partida" className="link-rota">Detalhes Partidas</Link>
-        <Link to="/cadastro-partida" className="link-rota">Cadastro Partidas</Link>
-        <Link to="/historico-partidas" className="link-rota">Historico Partidas</Link>
-        <Link to="/pagamento" className="link-rota">Pagamento</Link>
-        <Link to="/contato" className="link-rota">Contato</Link>
-        <Link to="/historico-conquistas" className="link-rota">Historico  conquistas</Link>
-        <Link to="/notificacoes" className="link-rota">Notificacoes</Link>
-        <Link to="/chat" className="link-rota">Chat</Link>
-        <Link to="/upload-imagem" className="link-rota">Imagem</Link>
-        <Link to="/avaliacao-partida" className="link-rota">Avaliacao partida</Link>
-        <Link to="/convidar-amigos" className="link-rota">Convidar amigos</Link>
-        <div className="chat-container">
-            <div className="messages">
-                {messages.map((msg, index) => (
-                    <div key={index} className="message">
-                        <span><strong>{msg.sender}:</strong> {msg.text}</span>
-                        <span className="timestamp">{msg.timestamp}</span>
+        <div className="app-container">
+            {/* Menu dropdown */}
+            <div className="menu-container">
+                <div className="menu-dropdown">
+                    <span className="menu-button">Menu</span>
+                    <div className="menu-content">
+                        <Link to="/login" className="menu-item">Login</Link>
+                        <Link to="/cadastro" className="menu-item">Cadastro</Link>
+                        <Link to="/editar-perfil" className="menu-item">Editar Perfil</Link>
+                        <Link to="/mapa" className="menu-item">Mapa</Link>
+                        <Link to="/favoritar-partida" className="menu-item">Partidas Favoritas</Link>
+                        <Link to="/detalhes-partida" className="menu-item">Detalhes Partidas</Link>
+                        <Link to="/cadastro-partida" className="menu-item">Cadastro Partidas</Link>
+                        <Link to="/historico-partidas" className="menu-item">Histórico Partidas</Link>
+                        <Link to="/pagamento" className="menu-item">Pagamento</Link>
+                        <Link to="/contato" className="menu-item">Contato</Link>
+                        <Link to="/historico-conquistas" className="menu-item">Histórico conquistas</Link>
+                        <Link to="/notificacoes" className="menu-item">Notificações</Link>
+                        <Link to="/chat" className="menu-item">Chat</Link>
+                        <Link to="/upload-imagem" className="menu-item">Imagem</Link>
+                        <Link to="/avaliacao-partida" className="menu-item">Avaliação partida</Link>
+                        <Link to="/convidar-amigos" className="menu-item">Convidar amigos</Link>
                     </div>
-                ))}
+                </div>
             </div>
-            <div className="input-container">
-                <input
-                    type="text"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    placeholder="Digite sua mensagem..."
-                />
-                <button onClick={sendMessage}>Enviar</button>
+
+            {/* Chat centralizado */}
+            <div className="chat-container">
+                <div className="messages">
+                    {messages.map((msg, index) => (
+                        <div key={index} className={`message ${msg.sender === 'Você' ? 'user' : 'bot'}`}>
+                            <p><strong>{msg.sender}:</strong> {msg.text}</p>
+                            <p className="timestamp">{msg.timestamp}</p>
+                        </div>
+                    ))}
+                </div>
+                <div className="input-container">
+                    <input
+                        type="text"
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        placeholder="Digite sua mensagem..."
+                    />
+                    <button onClick={sendMessage}>Enviar</button>
+                </div>
             </div>
-        </div>
         </div>
     );
 }
