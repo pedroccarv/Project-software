@@ -91,6 +91,36 @@ app.delete('/usuarios/:id', async (req, res) => {
 app.listen(3000, () => {
     console.log('Servidor rodando na porta 3000');
 });
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        return res.status(400).json({ error: 'Email e senha são obrigatórios' });
+    }
+
+    try {
+        // Verifica se o usuário existe no banco de dados
+        const usuario = await prisma.user.findUnique({
+            where: { email: email },
+        });
+
+        if (!usuario) {
+            return res.status(404).json({ error: 'Usuário não encontrado' });
+        }
+
+        // Verifica se a senha está correta
+        const isPasswordValid = await bcrypt.compare(password, usuario.password);
+
+        if (!isPasswordValid) {
+            return res.status(401).json({ error: 'Senha incorreta' });
+        }
+
+        // Se o login for bem-sucedido, você pode retornar os dados do usuário ou um token (como JWT)
+        res.status(200).json({ id: usuario.id, email: usuario.email, name: usuario.name });
+    } catch (error) {
+        res.status(500).json({ error: 'Erro ao fazer login' });
+    }
+});
 
 
 /* 
