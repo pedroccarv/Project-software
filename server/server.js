@@ -63,7 +63,7 @@ app.get('/usuarios', async (req, res) => {
         const filter = {};
         if (req.query.name) filter.name = req.query.name;
         if (req.query.email) filter.email = req.query.email;
-        if (req.query.age) filter.age = Number(req.query.age); // Convertendo para número, se necessário
+        if (req.query.age) filter.age = req.query.age; 
 
         const usuarios = await prisma.user.findMany({
             where: filter,
