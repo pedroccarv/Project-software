@@ -19,14 +19,16 @@ import ConvidarAmigos from '../components/ConvidarAmigos';
 import HistoricoConquistas from '../components/HistoricoConquistas';
 import Agendar from '../components/Agendarquadra';
 import ContadorPartidas from '../components/ContadorPartidas';
-import Usuario from '../components/Usuario'
+import Usuario from '../components/Usuario';
+import PrivateRoute from '../route/privateRoute'; // Importe o PrivateRoute
+import Pagina from '../components/LandingPage'
 
 function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Página inicial de Partidas */}
-        <Route path="/" element={<Partidas />} />
+        {/* Página inicial de Cadastro */}
+        <Route path="/" element={<Cadastro />} />
 
         {/* Rotas de autenticação */}
         <Route path="/login" element={<Login />} />
@@ -34,31 +36,166 @@ function AppRoutes() {
         <Route path="/recuperar-senha" element={<RecuperarSenha />} />
 
         {/* Rotas de perfil e ajustes */}
-        <Route path="/editar-perfil" element={<EditarPerfil />} />
+        <Route
+          path="/editar-perfil"
+          element={
+            <PrivateRoute>
+              <EditarPerfil />
+            </PrivateRoute>
+          }
+        />
 
         {/* Mapa e funcionalidades de arena */}
-        <Route path="/mapa" element={<Mapa />} />
-        <Route path="/favoritar-partida" element={<FavoritarPartida />} />
+        <Route
+          path="/mapa"
+          element={
+            <PrivateRoute>
+              <Mapa />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/favoritar-partida"
+          element={
+            <PrivateRoute>
+              <FavoritarPartida />
+            </PrivateRoute>
+          }
+        />
 
         {/* Rotas relacionadas a partidas */}
-        <Route path="/detalhes-partida/:id" element={<DetalhesPartida />} />
-        <Route path="/cadastro-partida" element={<CadastroPartida />} />
-        <Route path="/historico-partidas" element={<HistoricoPartidas />} />
-        <Route path="/contador-partidas" element={<ContadorPartidas />} /> {/* Nova rota */}
+        <Route
+          path="/partidas"
+          element={
+            <PrivateRoute>
+              <Partidas />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/detalhes-partida/:id"
+          element={
+            <PrivateRoute>
+              <DetalhesPartida />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/cadastro-partida"
+          element={
+            <PrivateRoute>
+              <CadastroPartida />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/historico-partidas"
+          element={
+            <PrivateRoute>
+              <HistoricoPartidas />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/contador-partidas"
+          element={
+            <PrivateRoute>
+              <ContadorPartidas />
+            </PrivateRoute>
+          }
+        />
 
         {/* Funcionalidades adicionais */}
-        <Route path="/pagamento" element={<Pagamento />} />
-        <Route path="/contato" element={<Contato />} />
-        <Route path="/chat" element={<Chat />} />
-        <Route path="/notificacoes" element={<Notificacoes />} />
-        <Route path="/upload-imagem" element={<UploadImagem />} />
-        <Route path="/avaliacao-partida" element={<AvaliacaoPartida />} />
-        <Route path="/convidar-amigos" element={<ConvidarAmigos />} />
-        <Route path="/historico-conquistas" element={<HistoricoConquistas />} />
-        
+        <Route
+          path="/pagamento"
+          element={
+            <PrivateRoute>
+              <Pagamento />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/contato"
+          element={
+            <PrivateRoute>
+              <Contato />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/chat"
+          element={
+            <PrivateRoute>
+              <Chat />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/notificacoes"
+          element={
+            <PrivateRoute>
+              <Notificacoes />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/upload-imagem"
+          element={
+            <PrivateRoute>
+              <UploadImagem />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/avaliacao-partida"
+          element={
+            <PrivateRoute>
+              <AvaliacaoPartida />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/convidar-amigos"
+          element={
+            <PrivateRoute>
+              <ConvidarAmigos />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/historico-conquistas"
+          element={
+            <PrivateRoute>
+              <HistoricoConquistas />
+            </PrivateRoute>
+          }
+        />
+
         {/* Agendamento de quadra */}
-        <Route path="/agendar" element={<Agendar />} />
-        <Route path="/usuario" element={<Usuario />}/>
+        <Route
+          path="/agendar"
+          element={
+            <PrivateRoute>
+              <Agendar />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/usuario"
+          element={
+            <PrivateRoute>
+              <Usuario />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/pagina"
+          element={
+            <PrivateRoute>
+              <Pagina />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
