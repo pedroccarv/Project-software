@@ -14,4 +14,13 @@ model User {
   email    String  @unique
   name     String
   password String?
+  posts    Post[]
+}
+model Post {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  image     String?  // Campo opcional para a imagem
+  userId    String   @db.ObjectId // Referência ao usuário que fez a postagem
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now()) 
 }
