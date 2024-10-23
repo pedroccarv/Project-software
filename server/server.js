@@ -38,8 +38,18 @@ app.post('/usuarios', async (req, res) => {
     }
 });
 app.get('/usuarios', async (req, res) => {
+    const { name } = req.query;  // Obtém o parâmetro de consulta 'name'
+    
     try {
-        const usuarios = await prisma.user.findMany();
+        // Se o parâmetro 'name' for fornecido, filtra os usuários por nome
+        const usuarios = await prisma.user.findMany({
+            where: {
+                name: {
+                    contains: name,  // Filtra usando um 'LIKE' (parcial)
+                    mode: 'insensitive'  // Ignora maiúsculas/minúsculas
+                }
+            }
+        });
         res.status(200).json(usuarios);
     } catch (error) {
         console.error('Erro ao buscar usuários:', error);
