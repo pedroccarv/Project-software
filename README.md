@@ -1,8 +1,15 @@
-# React + Vite
+Projeto De Software
+Este e um projeto de conclusao de curso tecnico do colegio COTEMIG.
+A ideia e ser uma comunidade de beach tennis e de outros esportes que envolvam a areia. Vimos que o beach tennis e os esportes de areia no Brasil estao crescendo muito, com isso criamos nosso site MEET BEACH para unir essa comunidade tao maravilhosa.
+Nossa equipe conta com:
+Front-end responsavel pelos colaboradores:
+Gabriel utsch
+Teodoro Dias
+E o back-end por:
+Gabriel Guedes
+Pedro Carvalho
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Estamos desenvelvendo o site da seguinte maneira:
+Linguagem: JavaScript
+Framework: React
+Banco de Dados: Mongo DB junto ao prisma e express
