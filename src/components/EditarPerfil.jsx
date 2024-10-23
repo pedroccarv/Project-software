@@ -64,7 +64,7 @@ function EditarPerfil() {
       </div>
 
       <div className="container">
-        <h1>Editar Perfil</h1>
+        <h1>Seu perfil</h1>
         <form onSubmit={handleSubmit} className="editar-form">
           <input 
             type="text" 
