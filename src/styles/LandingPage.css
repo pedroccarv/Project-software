@@ -1,49 +1,98 @@
 .landing-page {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-  }
-  
-  .header {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .post-form {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .post {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-  }
-  
-  .comments {
-    margin-top: 10px;
-  }
-  
-  input[type="text"],
-  textarea {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-  }
-  
-  button {
-    padding: 10px;
-    background-color: #4267B2; /* Cor do Facebook */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #365e8c; /* Tom mais escuro ao passar o mouse */
-  }
-  
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between; /* Alinha o título e o menu de usuário nas extremidades */
+  align-items: center;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.header h1 {
+  flex-grow: 1; /* Faz o título centralizar quando há espaço */
+}
+
+.user-menu {
+  position: relative;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  z-index: 10; /* Certifique-se de que o menu está acima de outros elementos */
+}
+
+.dropdown-menu button {
+  background: none;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  color: #000; /* Cor do texto preta para garantir visibilidade */
+  font-size: 14px; /* Tamanho da fonte ajustado */
+}
+
+.dropdown-menu button:hover {
+  background-color: #f1f1f1;
+}
+.dropdown-menu button:disabled {
+  color: #ccc; /* Cor do texto para botões desabilitados */
+}
+.post-form {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+.post {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+.comments {
+  margin-top: 10px;
+}
+
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px;
+  background-color: #4267B2; /* Cor do Facebook */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #365e8c; /* Tom mais escuro ao passar o mouse */
+}
+
+.post-actions button {
+  margin-right: 10px;
+}
