@@ -4,10 +4,11 @@ import '../styles/LandingPage.css'; // Importe um CSS para estilos
 import axios from 'axios';
 
 const LandingPage = () => {
-  const { user } = useAuth(); // Obtendo informações do usuário logado
+  const { user, logout } = useAuth(); // Obtendo informações do usuário logado e a função de logout
   const [posts, setPosts] = useState([]);
   const [postContent, setPostContent] = useState('');
   const [postImage, setPostImage] = useState(null);
+  const [showDropdown, setShowDropdown] = useState(false); // Estado para controlar o menu suspenso
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -49,8 +50,7 @@ const LandingPage = () => {
     } catch (error) {
         console.error('Erro ao criar postagem:', error);
     }
-};
-
+  };
 
   const handleDeletePost = async (postId) => {
     try {
@@ -73,11 +73,34 @@ const LandingPage = () => {
     } catch (error) {
         console.error('Erro ao editar postagem:', error);
     }
-};
+  };
+
+  // Função para alternar o menu suspenso
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
+
   return (
     <div className="landing-page">
       <header className="header">
         <h1>Meu Feed</h1>
+
+        {/* Menu de usuário no canto superior direito */}
+        {user && (
+          <div className="user-menu">
+            <span onClick={toggleDropdown} className="user-name">
+              {user?.name || 'Usuário'}
+            </span>
+
+            {/* Dropdown com opções de perfil e logout */}
+            {showDropdown && (
+              <div className="dropdown-menu">
+                <button onClick={() => console.log('Editar Perfil')}>Editar Perfil</button>
+                <button onClick={logout}>Sair</button>
+              </div>
+            )}
+          </div>
+        )}
       </header>
 
       {user ? (
