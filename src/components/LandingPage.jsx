@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../services/AuthContext'; // Importando o contexto de autenticação
 import '../styles/LandingPage.css'; // Importe um CSS para estilos
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const LandingPage = () => {
   const { user, logout } = useAuth(); // Obtendo informações do usuário logado e a função de logout
@@ -9,7 +10,7 @@ const LandingPage = () => {
   const [postContent, setPostContent] = useState('');
   const [postImage, setPostImage] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false); // Estado para controlar o menu suspenso
-
+  const navigate = useNavigate(); // Chama o useNavigate aqui
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -95,7 +96,7 @@ const LandingPage = () => {
             {/* Dropdown com opções de perfil e logout */}
             {showDropdown && (
               <div className="dropdown-menu">
-                <button onClick={() => console.log('Editar Perfil')}>Editar Perfil</button>
+                <button onClick={() => navigate('/editar-perfil')}>Editar Perfil</button>
                 <button onClick={logout}>Sair</button>
               </div>
             )}
