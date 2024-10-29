@@ -3,6 +3,8 @@ import { useAuth } from '../services/AuthContext'; // Importando o contexto de a
 import '../styles/LandingPage.css'; // Importe um CSS para estilos
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
+import { } from '@fortawesome/react-fontawesome'
 
 const LandingPage = () => {
   const { user, logout } = useAuth(); // Obtendo informações do usuário logado e a função de logout
@@ -31,25 +33,25 @@ const LandingPage = () => {
   const handlePostSubmit = async (e) => {
     e.preventDefault();
     const newPost = {
-        content: postContent,
-        image: postImage,
-        userId: user.id, // ID do usuário logado
+      content: postContent,
+      image: postImage,
+      userId: user.id, // ID do usuário logado
     };
 
     try {
-        const response = await axios.post('http://localhost:3000/posts', newPost);
+      const response = await axios.post('http://localhost:3000/posts', newPost);
 
-        // Cria um novo post incluindo os dados do usuário
-        const postWithUser = {
-            ...response.data,
-            user: { id: response.data.user.id, name: response.data.user.name }, // Inclua o nome do usuário
-        };
+      // Cria um novo post incluindo os dados do usuário
+      const postWithUser = {
+        ...response.data,
+        user: { id: response.data.user.id, name: response.data.user.name }, // Inclua o nome do usuário
+      };
 
-        setPosts([postWithUser, ...posts]); // Adiciona a nova postagem no início
-        setPostContent('');
-        setPostImage(null);
+      setPosts([postWithUser, ...posts]); // Adiciona a nova postagem no início
+      setPostContent('');
+      setPostImage(null);
     } catch (error) {
-        console.error('Erro ao criar postagem:', error);
+      console.error('Erro ao criar postagem:', error);
     }
   };
 
@@ -66,13 +68,13 @@ const LandingPage = () => {
 
   const handleEditPost = async (postId, updatedContent) => {
     try {
-        const response = await axios.put(`http://localhost:3000/posts/${postId}`, {
-            content: updatedContent,
-            userId: user.id, // Certifique-se de enviar o userId aqui
-        });
-        setPosts(posts.map((post) => (post.id === postId ? response.data : post)));
+      const response = await axios.put(`http://localhost:3000/posts/${postId}`, {
+        content: updatedContent,
+        userId: user.id, // Certifique-se de enviar o userId aqui
+      });
+      setPosts(posts.map((post) => (post.id === postId ? response.data : post)));
     } catch (error) {
-        console.error('Erro ao editar postagem:', error);
+      console.error('Erro ao editar postagem:', error);
     }
   };
 
@@ -88,19 +90,29 @@ const LandingPage = () => {
 
         {/* Menu de usuário no canto superior direito */}
         {user && (
-          <div className="user-menu">
-            <span onClick={toggleDropdown} className="user-name">
-              {user?.name || 'Usuário'}
-            </span>
+          <Menu as="div" className="relative inline-block text-left">
+            <div>
+              <MenuButton className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                {user?.name || 'Usuário'}
+                <svg width="20px" height="20px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 14a.997.997 0 01-.707-.293l-5-5a.999.999 0 111.414-1.414L10 11.586l4.293-4.293a.999.999 0 111.414 1.414l-5 5A.997.997 0 0110 14z" fill="#5C5F62" /></svg>
+              </MenuButton>
+            </div>
 
-            {/* Dropdown com opções de perfil e logout */}
-            {showDropdown && (
-              <div className="dropdown-menu">
+            <MenuItems
+              transition
+              className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+            >
+              <div className="py-1">
+                <MenuItem>
                 <button onClick={() => navigate('/editar-perfil')}>Editar Perfil</button>
+                </MenuItem>
+                <MenuItem>
                 <button onClick={logout}>Sair</button>
+                </MenuItem>
+                
               </div>
-            )}
-          </div>
+            </MenuItems>
+          </Menu>
         )}
       </header>
 

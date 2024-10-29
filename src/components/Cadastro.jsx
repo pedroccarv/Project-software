@@ -138,14 +138,15 @@ function Cadastro() {
             <input 
               type={senhaVisivel ? "text" : "password"} 
               placeholder="Senha"
+              className=''
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               ref={inputPassword}
               required
             />
-            <span className="eye-icon" onClick={toggleSenhaVisivel}>
-              <FontAwesomeIcon icon={senhaVisivel ? faEye : faEyeSlash} />
-            </span>
+            {/* <span className="eye-icon absolute right-0" onClick={toggleSenhaVisivel}> */}
+              <FontAwesomeIcon onClick={toggleSenhaVisivel} className='absolute right-3 bottom-8' icon={senhaVisivel ? faEye : faEyeSlash} />
+            {/* </span> */}
           </div>
           <button type="submit" onClick={createUsers} className="btn-cadastrar">Criar perfil gratuito</button>
         </form>
