@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';    
-import axios from 'axios';
+import { Link } from 'react-router-dom';
+import api from '../services/api';
 import '../styles/editarPerfil.css';
 
 function EditarPerfil() {
@@ -10,17 +10,23 @@ function EditarPerfil() {
     senha: ''
   });
 
-  useEffect(() => {
-    const usuarioId = 1; // Exemplo: ID fixo do usuário; você pode obter isso de um contexto ou autenticação
-
-    // Chamada à API para obter os dados do usuário
-    axios.get(`/api/usuario/${usuarioId}`)
-      .then(response => {
-        setUsuario(response.data);  // Preenche os campos com os dados recebidos
-      })
-      .catch(error => {
-        console.error("Houve um erro ao buscar os dados do usuário:", error);
+  // Função para buscar os dados do usuário
+  async function getUser(id) {
+    try {
+      const response = await api.get(`/usuarios/${id}`);
+      setUsuario({
+        nome: response.data.name, // Ajuste conforme a estrutura da resposta da API
+        email: response.data.email,
+        senha: '' // Opcional: deixe o campo de senha vazio para segurança
       });
+    } catch (error) {
+      console.error("Houve um erro ao buscar os dados do usuário:", error);
+    }
+  }
+
+  useEffect(() => {
+    const usuarioId = 1; // ID do usuário; idealmente, obtenha do contexto ou autenticação
+    getUser(usuarioId);
   }, []);
 
   const handleChange = (e) => {
@@ -28,18 +34,16 @@ function EditarPerfil() {
     setUsuario({ ...usuario, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const usuarioId = 1; // Exemplo: ID fixo do usuário; ajustar conforme necessário
-    
-    // Chamada à API para atualizar os dados do usuário
-    axios.put(`/api/usuario/${usuarioId}`, usuario)
-      .then(response => {
-        alert('Perfil atualizado com sucesso!');
-      })
-      .catch(error => {
-        console.error("Houve um erro ao atualizar o perfil:", error);
-      });
+    const usuarioId = 1; // ID do usuário
+
+    try {
+      await api.put(`/usuarios/${usuarioId}`, usuario);
+      alert('Perfil atualizado com sucesso!');
+    } catch (error) {
+      console.error("Houve um erro ao atualizar o perfil:", error);
+    }
   };
 
   return (
@@ -70,7 +74,7 @@ function EditarPerfil() {
             type="text" 
             name="nome" 
             placeholder="Nome" 
-            value={usuario.nome} 
+            value={usuario.nome || ''} 
             onChange={handleChange} 
             required 
           />
@@ -78,7 +82,7 @@ function EditarPerfil() {
             type="email" 
             name="email" 
             placeholder="Email" 
-            value={usuario.email} 
+            value={usuario.email || ''} 
             onChange={handleChange} 
             required 
           />
@@ -86,7 +90,7 @@ function EditarPerfil() {
             type="password" 
             name="senha" 
             placeholder="Senha" 
-            value={usuario.senha} 
+            value={usuario.senha || ''} 
             onChange={handleChange} 
             required 
           />
