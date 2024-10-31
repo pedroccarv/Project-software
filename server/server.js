@@ -176,6 +176,28 @@ app.delete('/posts/:id', async (req, res) => {
         res.status(500).json({ error: 'Erro ao excluir a postagem' });
     }
 });
+app.get('/usuarios/:id', async (req, res) => {
+    const { id } = req.params;
+
+    // Verifica se o ID é um número
+    if (isNaN(id)) {
+        return res.status(400).json({ error: 'ID inválido' });
+    }
+
+    try {
+        const usuario = await prisma.user.findUnique({ where: { id: parseInt(id) } });
+
+        if (!usuario) {
+            return res.status(404).json({ error: 'Usuário não encontrado' });
+        }
+
+        res.status(200).json(usuario);
+    } catch (error) {
+        console.error('Erro ao buscar usuário:', error);
+        res.status(500).json({ error: 'Erro ao buscar usuário' });
+    }
+});
+
 
 // Inicializa o servidor
 app.listen(3000, () => {
