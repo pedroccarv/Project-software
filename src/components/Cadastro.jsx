@@ -4,6 +4,7 @@ import '../styles/cadastro.css';
 import api from '../services/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { Toaster, toast } from 'sonner'
 
 function Cadastro() {
   const [email, setEmail] = useState('');
@@ -100,7 +101,7 @@ function Cadastro() {
 
       {/* Contêiner de Cadastro centralizado */}
       <div className="cadastro-container">
-        <img src="src/images/logo.png" alt="Logo" width="60%" />
+        <img src="/src/assets/logo.png" alt="Logo" width="60%" />
         <h1>Crie uma conta</h1>
         <form onSubmit={handleSubmit}>
           <input
