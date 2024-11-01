@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import '../styles/partidas.css';
+
 
 function Partidas() {
   const [partidas, setPartidas] = useState([]);
