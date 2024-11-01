@@ -5,6 +5,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { } from '@fortawesome/react-fontawesome'
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+import NavBar from './NavBar';
 
 const LandingPage = () => {
   const { user, logout } = useAuth(); // Obtendo informações do usuário logado e a função de logout
@@ -84,6 +86,8 @@ const LandingPage = () => {
   };
 
   return (
+    <>
+    <NavBar />
     <div className="landing-page">
       <header className="header">
         <h1>Meu Feed</h1>
@@ -92,7 +96,13 @@ const LandingPage = () => {
         {user && (
           <Menu as="div" className="relative inline-block text-left">
             <div>
-              <MenuButton className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+
+              <MenuButton className="flex items-center w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                <span className='flex justify-center items-center'> <img
+                  alt=""
+                  FontAwesomeIcon icon="fa-solid fa-user" 
+                  className="inline-block h-6 w-6 rounded-full ring-2 ring-white"
+                /></span>
                 {user?.name || 'Usuário'}
                 <svg width="20px" height="20px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 14a.997.997 0 01-.707-.293l-5-5a.999.999 0 111.414-1.414L10 11.586l4.293-4.293a.999.999 0 111.414 1.414l-5 5A.997.997 0 0110 14z" fill="#5C5F62" /></svg>
               </MenuButton>
@@ -104,12 +114,12 @@ const LandingPage = () => {
             >
               <div className="py-1">
                 <MenuItem>
-                <button onClick={() => navigate('/editar-perfil')}>Editar Perfil</button>
+                  <button onClick={() => navigate('/editar-perfil')}>Editar Perfil</button>
                 </MenuItem>
                 <MenuItem>
-                <button onClick={logout}>Sair</button>
+                  <button onClick={logout}>Sair</button>
                 </MenuItem>
-                
+
               </div>
             </MenuItems>
           </Menu>
@@ -149,6 +159,7 @@ const LandingPage = () => {
         ))}
       </div>
     </div>
+    </>
   );
 };
 
@@ -175,10 +186,13 @@ const Post = ({ post, user, onDeletePost, onEditPost }) => {
   const userName = post.user?.name || 'Usuário Desconhecido';
 
   return (
+    <>
     <div className="post">
       <p>
         <strong>{userName}</strong> - {new Date(post.createdAt).toLocaleString()}
       </p>
+
+      
 
       {isEditing ? (
         <div>
@@ -203,6 +217,7 @@ const Post = ({ post, user, onDeletePost, onEditPost }) => {
         </div>
       )}
     </div>
+    </>
   );
 };
 
