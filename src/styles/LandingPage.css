@@ -1,9 +1,15 @@
 .landing-page {
   max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 60px;
   margin: 0 auto;
   padding: 20px;
   font-family: Arial, sans-serif;
 }
+
+
 
 .header {
   display: flex;
@@ -54,10 +60,9 @@
   color: #ccc; /* Cor do texto para botões desabilitados */
 }
 .post-form {
-  border: 1px solid #ccc;
+  box-shadow: 0px 0px 19px -8px rgba(0,0,0,0.67);
   padding: 10px;
-  margin-bottom: 20px;
-  border-radius: 5px;
+  border-radius: 10px;
 }
 
 .post {
