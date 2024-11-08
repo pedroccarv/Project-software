@@ -22,13 +22,13 @@
     max-width: 400px;
   }
   
-  input, select {
+  /* input, select {
     padding: 10px;
     margin: 10px 0;
     border: 2px solid #ffa500;
     border-radius: 5px;
   }
-  
+   */
   button {
     padding: 10px;
     background-color: #ff8c00;

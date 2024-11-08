@@ -6,8 +6,8 @@ import { useNavigate } from 'react-router-dom';
 
 const navigation = [
     { name: 'Home', href: '/', current: true },
-    { name: 'Team', href: '/team', current: false },
-    { name: 'Projects', href: '/projects', current: false },
+    { name: 'Convidar Amigos', href: '/convidar-amigos', current: false },
+    { name: 'Alugar', href: '/', current: false },
     { name: 'Calendar', href: '/calendar', current: false },
 ];
 

@@ -7,7 +7,6 @@ import Pagamento from '../pages/Pagamento';
 import Contato from '../pages/Contato';
 import Notificacoes from '../components/Notificacoes';
 import ConvidarAmigos from '../components/ConvidarAmigos';
-import Agendar from '../components/Agendarquadra';
 import Usuario from '../components/Usuario';
 import PrivateRoute from '../route/privateRoute'; // Importe o PrivateRoute
 import Pagina from '../components/LandingPage'
@@ -74,14 +73,6 @@ function AppRoutes() {
           }
         />
         {/* Agendamento de quadra */}
-        <Route
-          path="/agendar"
-          element={
-            <PrivateRoute>
-              <Agendar />
-            </PrivateRoute>
-          }
-        />
         <Route
           path="/usuario"
           element={

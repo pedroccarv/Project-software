@@ -13,14 +13,14 @@ h1 {
     align-items: center;
 }
 
-input {
+/* input {
     padding: 10px;
     margin: 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
     width: 100%;
     max-width: 300px;
-}
+} */
 
 button {
     background-color: #ffc107;

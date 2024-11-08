@@ -19,12 +19,12 @@
     margin: auto;
   }
   
-  input, textarea {
+  /* input, textarea {
     padding: 10px;
     margin: 10px 0;
     border: 2px solid #007acc;
     border-radius: 5px;
-  }
+  } */
   
   textarea {
     min-height: 100px;

@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import emailjs from "emailjs-com";
 import "../styles/ConvidarAmigos.css";
-import { Link } from "react-router-dom";
+import NavBar from "./NavBar";
 
 function ConvidarAmigos() {
   const [email, setEmail] = useState("");
@@ -58,23 +58,8 @@ function ConvidarAmigos() {
   };
 
   return (
-    <div className="rotas">
-    <Link to="/login" className="link-rota">Login</Link>
-    <Link to="/cadastro" className="link-rota">Cadastro</Link>
-    <Link to="/editar-perfil" className="link-rota">Editar Perfil</Link>
-    <Link to="/mapa" className="link-rota">Mapa</Link>
-    <Link to="/favoritar-partida" className="link-rota">Partidas Favoritas</Link>
-    <Link to="/detalhes-partida" className="link-rota">Detalhes Partidas</Link>
-    <Link to="/cadastro-partida" className="link-rota">Cadastro Partidas</Link>
-    <Link to="/historico-partidas" className="link-rota">Historico Partidas</Link>
-    <Link to="/pagamento" className="link-rota">Pagamento</Link>
-    <Link to="/contato" className="link-rota">Contato</Link>
-    <Link to="/historico-conquistas" className="link-rota">Historico  conquistas</Link>
-    <Link to="/notificacoes" className="link-rota">Notificacoes</Link>
-    <Link to="/chat" className="link-rota">Chat</Link>
-    <Link to="/upload-imagem" className="link-rota">Imagem</Link>
-    <Link to="/avaliacao-partida" className="link-rota">Avaliacao partida</Link>
-    <Link to="/convidar-amigos" className="link-rota">Convidar amigos</Link>
+    <>
+    <NavBar />
     <form
       ref={form}
       onSubmit={enviarConvite}
@@ -84,6 +69,8 @@ function ConvidarAmigos() {
       <input
         type="text"
         name="to_name"
+        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+
         value={nomeDoAmigo}
         onChange={(e) => setNomeDoAmigo(e.target.value)}
         placeholder="Nome do amigo"
@@ -91,6 +78,8 @@ function ConvidarAmigos() {
       <input
         type="text"
         name="from_name"
+        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+
         value={nomeRemetente}
         onChange={(e) => setNomeRemetente(e.target.value)}
         placeholder="Seu nome"
@@ -98,6 +87,8 @@ function ConvidarAmigos() {
       <input
         type="email"
         name="email"
+        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Seu e-mail"
@@ -105,7 +96,7 @@ function ConvidarAmigos() {
       <button onClick={enviarConvite}>Enviar Convite</button>
       {status && <p>{status}</p>}
     </form>
-    </div>
+    </>
   );
 }
 

@@ -74,6 +74,7 @@ function EditarPerfil() {
             type="text" 
             name="nome" 
             placeholder="Nome" 
+            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
             value={usuario.nome || ''} 
             onChange={handleChange} 
             required 
@@ -82,6 +83,7 @@ function EditarPerfil() {
             type="email" 
             name="email" 
             placeholder="Email" 
+            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
             value={usuario.email || ''} 
             onChange={handleChange} 
             required 
@@ -89,7 +91,8 @@ function EditarPerfil() {
           <input 
             type="password" 
             name="senha" 
-            placeholder="Senha" 
+            placeholder="Senha"
+            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
             value={usuario.senha || ''} 
             onChange={handleChange} 
             required 

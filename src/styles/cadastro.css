@@ -78,13 +78,13 @@ form {
   flex-direction: column;
 }
 
-input {
+/* input {
   margin-bottom: 10px;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
-}
+} */
 
 .senha-container {
   position: relative;
