@@ -34,6 +34,7 @@ function Contato() {
         <Link to="/upload-imagem" className="link-rota">Imagem</Link>
         <Link to="/avaliacao-partida" className="link-rota">Avaliacao partida</Link>
         <Link to="/convidar-amigos" className="link-rota">Convidar amigos</Link>
+        
         </div>
 <div className="container">
       <h1>Contato</h1>
