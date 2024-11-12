@@ -30,7 +30,7 @@
     min-height: 100px;
   }
   
-  button {
+  /* button {
     padding: 10px;
     background-color: #007acc;
     color: white;
@@ -41,5 +41,5 @@
   
   button:hover {
     background-color: #005f99;
-  }
+  } */
   

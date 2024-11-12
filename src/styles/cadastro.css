@@ -99,7 +99,7 @@ form {
   color: #007bff;
 }
 
-button {
+/* button {
   background-color: #87CEEB;
   color: white;
   padding: 10px;
@@ -112,7 +112,7 @@ button {
 
 button:hover {
   background-color: #66CCCC;
-}
+} */
 
 .terms, .login {
   font-size: 12px;

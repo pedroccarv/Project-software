@@ -5,7 +5,7 @@ import { useAuth } from '../services/AuthContext'; // Importando o contexto de a
 import { useNavigate } from 'react-router-dom';
 
 const navigation = [
-    { name: 'Home', href: '/', current: true },
+    { name: 'Home', href: '/', current: false },
     { name: 'Convidar Amigos', href: '/convidar-amigos', current: false },
     { name: 'Alugar', href: '/', current: false },
     { name: 'Calendar', href: '/calendar', current: false },

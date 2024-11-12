@@ -15,6 +15,7 @@ model User {
   name     String
   password String?
   posts    Post[]
+  isAdmin  Boolean @default(false)
 }
 model Post {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
@@ -23,4 +24,28 @@ model Post {
   userId    String   @db.ObjectId // Referência ao usuário que fez a postagem
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now()) 
+}
+model Quadra {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  imageUrl    String    // URL da imagem da quadra
+  horarios    Horario[] // Relação com os horários disponíveis
+  diasSemana  DiaSemana[]
+}
+
+enum DiaSemana {
+  DOMINGO
+  SEGUNDA
+  TERCA
+  QUARTA
+  QUINTA
+  SEXTA
+  SABADO
+}
+
+model Horario {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  hora      Int      // Exemplo: 7 para 7h, 22 para 22h
+  quadraId  String   @db.ObjectId
+  quadra    Quadra   @relation(fields: [quadraId], references: [id])
 }

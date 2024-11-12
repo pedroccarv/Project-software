@@ -85,9 +85,9 @@ textarea {
   border-radius: 5px;
 } */
 
-button {
+/* button {
   padding: 10px;
-  background-color: #4267B2; /* Cor do Facebook */
+  background-color: #4267B2; 
   color: white;
   border: none;
   border-radius: 5px;
@@ -95,8 +95,8 @@ button {
 }
 
 button:hover {
-  background-color: #365e8c; /* Tom mais escuro ao passar o mouse */
-}
+  background-color: #365e8c; 
+} */
 
 .post-actions button {
   margin-right: 10px;
