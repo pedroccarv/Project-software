@@ -13,10 +13,40 @@ const emailExists = async (email) => {
     const user = await prisma.user.findUnique({ where: { email } });
     return !!user;
 };
+const verifyAdmin = async (req, res, next) => {
+    const { userId } = req.body;
 
+    if (!userId) {
+        return res.status(400).json({ error: 'ID do usuário é obrigatório' });
+    }
+
+    try {
+        const usuario = await prisma.user.findUnique({ where: { id: userId } });
+
+        if (!usuario || !usuario.isAdmin) {
+            return res.status(403).json({ error: 'Acesso negado: usuário não é administrador' });
+        }
+
+        next(); // Se o usuário for admin, prossiga para a próxima função
+    } catch (error) {
+        console.error('Erro ao verificar administrador:', error);
+        res.status(500).json({ error: 'Erro ao verificar administrador' });
+    }
+};
+
+// Endpoint protegido para administradores
+app.get('/admin/dashboard', verifyAdmin, async (req, res) => {
+    try {
+        // Código para retornar dados administrativos
+        res.status(200).json({ message: 'Bem-vindo à página administrativa!' });
+    } catch (error) {
+        console.error('Erro ao buscar dados administrativos:', error);
+        res.status(500).json({ error: 'Erro ao buscar dados administrativos' });
+    }
+});
 // Endpoint para criar um novo usuário
 app.post('/usuarios', async (req, res) => {
-    const { email, name, age, password } = req.body;
+    const { email, name, age, password, isAdmin  } = req.body;
 
     if (!email || !password || !name || !age) {
         return res.status(400).json({ error: 'Email, nome, idade e senha são obrigatórios' });
@@ -29,7 +59,7 @@ app.post('/usuarios', async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
         const usuario = await prisma.user.create({
-            data: { email, name, age, password: hashedPassword },
+            data: { email, name, age, password: hashedPassword, isAdmin: isAdmin || false },
         });
         res.status(201).json(usuario);
     } catch (error) {
@@ -77,7 +107,7 @@ app.post('/login', async (req, res) => {
             return res.status(401).json({ error: 'Senha incorreta' });
         }
 
-        res.status(200).json({ id: usuario.id, email: usuario.email, name: usuario.name });
+        res.status(200).json({ id: usuario.id, email: usuario.email, name: usuario.name, isAdmin: usuario.isAdmin });
     } catch (error) {
         console.error('Erro ao fazer login:', error);
         res.status(500).json({ error: 'Erro ao fazer login' });
@@ -195,6 +225,137 @@ app.get('/usuarios/:id', async (req, res) => {
     } catch (error) {
         console.error('Erro ao buscar usuário:', error);
         res.status(500).json({ error: 'Erro ao buscar usuário' });
+    }
+});
+app.put('/usuarios/:id', async (req, res) => {
+    const { id } = req.params;
+    const { name, age, email } = req.body;
+
+    try {
+        const usuario = await prisma.user.findUnique({ where: { id } });
+
+        if (!usuario) {
+            return res.status(404).json({ error: 'Usuário não encontrado' });
+        }
+
+        const updatedUser = await prisma.user.update({
+            where: { id },
+            data: { name, age, email },
+        });
+
+        res.status(200).json(updatedUser);
+    } catch (error) {
+        console.error('Erro ao atualizar usuário:', error);
+        res.status(500).json({ error: 'Erro ao atualizar usuário' });
+    }
+});
+
+// Endpoint to create a new court
+app.post('/admin/cadastro-quadra', verifyAdmin, async (req, res) => {
+    const { name, location, photos, availableDays, openingTime, closingTime } = req.body;
+
+    console.log('Dados recebidos no backend:', { name, location, photos, availableDays, openingTime, closingTime });
+
+    // Verificar se todos os campos são fornecidos e estão no formato correto
+    if (!name || !location || !Array.isArray(photos) || photos.length === 0 || !Array.isArray(availableDays) || availableDays.length === 0 || !openingTime || !closingTime) {
+        console.log('Erro na validação dos dados recebidos');
+        return res.status(400).json({ error: 'Todos os campos são obrigatórios e devem estar no formato correto' });
+    }
+
+    try {
+        const court = await prisma.quadra.create({
+            data: {
+                name,
+                location,
+                imageUrl: photos[0], // Usando a primeira foto como `imageUrl` principal
+                photos,
+                diasSemana: availableDays,
+                openingTime,
+                closingTime,
+            },
+        });
+        res.status(201).json(court);
+    } catch (error) {
+        console.error('Erro ao criar quadra:', error);
+        res.status(500).json({ error: 'Erro ao criar quadra' });
+    }
+});
+// Endpoint to schedule a court
+app.post('/schedule', async (req, res) => {
+    const { userId, courtId, dayOfWeek, startTime, endTime } = req.body;
+
+    if (!userId || !courtId || !dayOfWeek || !startTime || !endTime) {
+        return res.status(400).json({ error: 'Todos os campos são obrigatórios' });
+    }
+
+    try {
+        // Check if the court is available for the selected time and day
+        const existingSchedule = await prisma.schedule.findFirst({
+            where: {
+                courtId,
+                dayOfWeek,
+                startTime: {
+                    lte: endTime,
+                },
+                endTime: {
+                    gte: startTime,
+                },
+            },
+        });
+
+        if (existingSchedule) {
+            return res.status(400).json({ error: 'Quadra não disponível para o horário selecionado' });
+        }
+
+        // Create the schedule
+        const schedule = await prisma.schedule.create({
+            data: {
+                userId,
+                courtId,
+                dayOfWeek,
+                startTime,
+                endTime,
+            },
+        });
+
+        res.status(201).json(schedule);
+    } catch (error) {
+        console.error('Erro ao agendar quadra:', error);
+        res.status(500).json({ error: 'Erro ao agendar quadra' });
+    }
+});
+app.get('/quadras', async (req, res) => {
+    try {
+        const courts = await prisma.Quadra.findMany({
+            include: {
+                horarios: true, // Inclui os horários para cada quadra
+            },
+        });
+        res.status(200).json(courts);
+    } catch (error) {
+        console.error('Erro ao buscar quadras:', error);
+        res.status(500).json({ error: 'Erro ao buscar quadras' });
+    }
+});
+
+// Endpoint para buscar detalhes de uma quadra
+app.get('/quadras/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const quadra = await prisma.Quadra.findUnique({
+            where: { id },
+            include: { horarios: true },
+        });
+
+        if (!quadra) {
+            return res.status(404).json({ error: 'Quadra não encontrada' });
+        }
+
+        res.status(200).json(quadra);
+    } catch (error) {
+        console.error('Erro ao buscar detalhes da quadra:', error);
+        res.status(500).json({ error: 'Erro ao buscar detalhes da quadra' });
     }
 });
 

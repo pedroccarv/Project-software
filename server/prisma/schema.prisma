@@ -26,11 +26,15 @@ model Post {
   createdAt DateTime @default(now()) 
 }
 model Quadra {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
   name        String
-  imageUrl    String    // URL da imagem da quadra
-  horarios    Horario[] // Relação com os horários disponíveis
-  diasSemana  DiaSemana[]
+  location    String     // Localização da quadra
+  imageUrl    String     // URL da imagem da quadra
+  photos      String[]   // URLs das imagens da quadra
+  horarios    Horario[]  // Relação com os horários disponíveis
+  diasSemana  DiaSemana[] // Dias da semana que a quadra está disponível
+  openingTime String     // Horário de abertura
+  closingTime String     // Horário de fechamento
 }
 
 enum DiaSemana {
@@ -44,8 +48,11 @@ enum DiaSemana {
 }
 
 model Horario {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  hora      Int      // Exemplo: 7 para 7h, 22 para 22h
-  quadraId  String   @db.ObjectId
-  quadra    Quadra   @relation(fields: [quadraId], references: [id])
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  horarioInicio Int      // Hora de início do agendamento, ex: 7 para 7h
+  horarioFim    Int      // Hora de término do agendamento, ex: 8 para 8h
+  quadraId      String   @db.ObjectId
+  quadra        Quadra   @relation(fields: [quadraId], references: [id])
+  diaSemana     DiaSemana // Dia específico para este horário
 }
+

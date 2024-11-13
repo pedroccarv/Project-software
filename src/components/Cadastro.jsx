@@ -20,7 +20,8 @@ function Cadastro() {
   const inputNome = useRef()
   const inputPassword = useRef()
   const navigate = useNavigate();
-
+  const [isAdmin, setIsAdmin] = useState(false);
+  
   const toggleSenhaVisivel = () => {
     setSenhaVisivel(!senhaVisivel);
   };
@@ -31,7 +32,8 @@ function Cadastro() {
         name: nome,
         age: age,
         email: email,
-        password: password,  // Certifique-se de que está enviando "password"
+        password: password,
+        isAdmin: isAdmin  // Certifique-se de que está enviando "password"
       });
       alert("Usuário criado com sucesso!"); 
       navigate('/login');  
@@ -105,6 +107,16 @@ function Cadastro() {
             {/* <span className="eye-icon absolute right-0" onClick={toggleSenhaVisivel}> */}
               <FontAwesomeIcon onClick={toggleSenhaVisivel} className='absolute right-3 bottom-8' icon={senhaVisivel ? faEye : faEyeSlash} />
             {/* </span> */}
+          </div>
+          <div className="admin-checkbox">
+            <label>
+              <input
+                type="checkbox"
+                checked={isAdmin}
+                onChange={(e) => setIsAdmin(e.target.checked)}
+              />
+              Desejo me cadastrar como administrador
+            </label>
           </div>
           <button type="submit" onClick={createUsers} className="btn-cadastrar">Criar perfil gratuito</button>
         </form>

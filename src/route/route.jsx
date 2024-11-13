@@ -10,6 +10,9 @@ import ConvidarAmigos from '../components/ConvidarAmigos';
 import Usuario from '../components/Usuario';
 import PrivateRoute from '../route/privateRoute'; // Importe o PrivateRoute
 import Pagina from '../components/LandingPage'
+import CadastroQuadra from '../components/CadastroQuadra'
+import Quadras from '../components/Quadras'
+import AdminRoute from '../route/adminRoute';
 
 function AppRoutes() {
   return (
@@ -87,6 +90,22 @@ function AppRoutes() {
             <PrivateRoute>
               <Pagina />
             </PrivateRoute>
+          }
+        />
+        <Route
+          path="/quadras"
+          element={
+            <PrivateRoute>
+              <Quadras />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/admin/cadastro-quadra"
+          element={
+            <AdminRoute>
+              <CadastroQuadra />
+            </AdminRoute>
           }
         />
       </Routes>

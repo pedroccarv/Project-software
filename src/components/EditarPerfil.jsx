@@ -1,106 +1,126 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useAuth } from '../services/AuthContext';
 import api from '../services/api';
+import { useNavigate } from 'react-router-dom';
+import NavBar from './NavBar';
 import '../styles/editarPerfil.css';
 
 function EditarPerfil() {
-  const [usuario, setUsuario] = useState({
-    nome: '',
-    email: '',
-    senha: ''
-  });
-
-  // Função para buscar os dados do usuário
-  async function getUser(id) {
-    try {
-      const response = await api.get(`/usuarios/${id}`);
-      setUsuario({
-        nome: response.data.name, // Ajuste conforme a estrutura da resposta da API
-        email: response.data.email,
-        senha: '' // Opcional: deixe o campo de senha vazio para segurança
-      });
-    } catch (error) {
-      console.error("Houve um erro ao buscar os dados do usuário:", error);
-    }
-  }
+  const { user, login } = useAuth();
+  const [nome, setNome] = useState(user?.name || '');
+  const [idade, setIdade] = useState(user?.age || '');
+  const [email, setEmail] = useState(user?.email || '');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const usuarioId = 1; // ID do usuário; idealmente, obtenha do contexto ou autenticação
-    getUser(usuarioId);
-  }, []);
+    if (user) {
+      setNome(user.name);
+      setIdade(user.age);
+      setEmail(user.email);
+    }
+  }, [user]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUsuario({ ...usuario, [name]: value });
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
-    const usuarioId = 1; // ID do usuário
+    setLoading(true);
 
     try {
-      await api.put(`/usuarios/${usuarioId}`, usuario);
+      const response = await api.put(`/usuarios/${user.id}`, {
+        name: nome,
+        age: idade,
+        email: email,
+      });
+
+      login(response.data); // Atualiza o contexto com os novos dados do usuário
       alert('Perfil atualizado com sucesso!');
+      navigate('/'); // Redireciona para a página inicial ou outra de sua preferência
     } catch (error) {
-      console.error("Houve um erro ao atualizar o perfil:", error);
+      console.error('Erro ao atualizar perfil:', error);
+      alert('Erro ao atualizar perfil, tente novamente.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div>
-      <div className="rotas">
-        <Link to="/login" className="link-rota">Login</Link>
-        <Link to="/cadastro" className="link-rota">Cadastro</Link>
-        <Link to="/editar-perfil" className="link-rota">Editar Perfil</Link>
-        <Link to="/mapa" className="link-rota">Mapa</Link>
-        <Link to="/favoritar-partida" className="link-rota">Partidas Favoritas</Link>
-        <Link to="/detalhes-partida" className="link-rota">Detalhes Partidas</Link>
-        <Link to="/cadastro-partida" className="link-rota">Cadastro Partidas</Link>
-        <Link to="/historico-partidas" className="link-rota">Historico Partidas</Link>
-        <Link to="/pagamento" className="link-rota">Pagamento</Link>
-        <Link to="/contato" className="link-rota">Contato</Link>
-        <Link to="/historico-conquistas" className="link-rota">Historico conquistas</Link>
-        <Link to="/notificacoes" className="link-rota">Notificacoes</Link>
-        <Link to="/chat" className="link-rota">Chat</Link>
-        <Link to="/upload-imagem" className="link-rota">Imagem</Link>
-        <Link to="/avaliacao-partida" className="link-rota">Avaliacao partida</Link>
-        <Link to="/convidar-amigos" className="link-rota">Convidar amigos</Link>
-      </div>
+    <>
+      <NavBar />
+      <div className="flex justify-center items-center min-h-screen bg-white text-[#161931]">
+        <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+          <h2 className="text-2xl font-bold text-center mb-6">Editar Perfil</h2>
 
-      <div className="container">
-        <h1>Seu perfil</h1>
-        <form onSubmit={handleSubmit} className="editar-form">
-          <input 
-            type="text" 
-            name="nome" 
-            placeholder="Nome" 
-            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-            value={usuario.nome || ''} 
-            onChange={handleChange} 
-            required 
-          />
-          <input 
-            type="email" 
-            name="email" 
-            placeholder="Email" 
-            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-            value={usuario.email || ''} 
-            onChange={handleChange} 
-            required 
-          />
-          <input 
-            type="password" 
-            name="senha" 
-            placeholder="Senha"
-            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-            value={usuario.senha || ''} 
-            onChange={handleChange} 
-            required 
-          />
-          <button type="submit" className="btn-atualizar">Atualizar</button>
-        </form>
+          <form onSubmit={handleSave} className="space-y-6">
+            <div>
+              <label htmlFor="nome" className="block text-sm font-medium text-gray-900">
+                Nome
+              </label>
+              <div className="mt-2">
+                <input
+                  id="nome"
+                  name="nome"
+                  type="text"
+                  required
+                  value={nome}
+                  onChange={(e) => setNome(e.target.value)}
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                  placeholder="Digite seu nome"
+                  aria-label="Nome"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="idade" className="block text-sm font-medium text-gray-900">
+                Idade
+              </label>
+              <div className="mt-2">
+                <input
+                  id="idade"
+                  name="idade"
+                  type="number"
+                  required
+                  value={idade}
+                  onChange={(e) => setIdade(e.target.value)}
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                  placeholder="Digite sua idade"
+                  aria-label="Idade"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-900">
+                E-mail
+              </label>
+              <div className="mt-2">
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                  placeholder="Digite seu e-mail"
+                  aria-label="E-mail"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-center">
+              <button
+                type="submit"
+                disabled={loading}
+                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                {loading ? 'Salvando...' : 'Salvar'}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
