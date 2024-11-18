@@ -31,7 +31,7 @@ model Quadra {
   location    String     // Localização da quadra
   imageUrl    String     // URL da imagem da quadra
   photos      String[]   // URLs das imagens da quadra
-  horarios    Horario[]  // Relação com os horários disponíveis
+  horarios    Horario[]  @relation("HorariosQuadra") // Relação com os horários disponíveis
   diasSemana  DiaSemana[] // Dias da semana que a quadra está disponível
   openingTime String     // Horário de abertura
   closingTime String     // Horário de fechamento
@@ -52,7 +52,10 @@ model Horario {
   horarioInicio Int      // Hora de início do agendamento, ex: 7 para 7h
   horarioFim    Int      // Hora de término do agendamento, ex: 8 para 8h
   quadraId      String   @db.ObjectId
-  quadra        Quadra   @relation(fields: [quadraId], references: [id])
+  quadra        Quadra   @relation(name: "HorariosQuadra", fields: [quadraId], references: [id])
   diaSemana     DiaSemana // Dia específico para este horário
 }
+
+
+
 
