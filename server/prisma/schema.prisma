@@ -8,14 +8,14 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(auto()) @map("_id") @db.ObjectId
-  /// Multiple data types found: String: 75%, BigInt: 25% out of 4 sampled entries
-  age      String
-  email    String  @unique
-  name     String
-  password String?
-  posts    Post[]
-  isAdmin  Boolean @default(false)
+  id           String       @id @default(auto()) @map("_id") @db.ObjectId
+  age          String
+  email        String       @unique
+  name         String
+  password     String?
+  posts        Post[]       // Posts feitos pelo usuário
+  isAdmin      Boolean      @default(false)
+  agendamentos Agendamento[] // Adicionando o relacionamento de volta para agendamentos
 }
 model Post {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
@@ -26,15 +26,16 @@ model Post {
   createdAt DateTime @default(now()) 
 }
 model Quadra {
-  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
   name        String
-  location    String     // Localização da quadra
-  imageUrl    String     // URL da imagem da quadra
-  photos      String[]   // URLs das imagens da quadra
-  horarios    Horario[]  @relation("HorariosQuadra") // Relação com os horários disponíveis
-  diasSemana  DiaSemana[] // Dias da semana que a quadra está disponível
-  openingTime String     // Horário de abertura
-  closingTime String     // Horário de fechamento
+  location    String
+  imageUrl    String
+  photos      String[]
+  horarios    Horario[]    @relation("HorariosQuadra")
+  diasSemana  DiaSemana[]
+  openingTime String
+  closingTime String
+  agendamentos Agendamento[] // Adicionando o relacionamento de volta para agendamentos
 }
 
 enum DiaSemana {
@@ -54,6 +55,16 @@ model Horario {
   quadraId      String   @db.ObjectId
   quadra        Quadra   @relation(name: "HorariosQuadra", fields: [quadraId], references: [id])
   diaSemana     DiaSemana // Dia específico para este horário
+}
+model Agendamento {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId       String   @db.ObjectId
+  quadraId     String   @db.ObjectId
+  diaSemana    DiaSemana
+  horarioInicio Int
+  horarioFim   Int
+  user         User     @relation(fields: [userId], references: [id])
+  quadra       Quadra   @relation(fields: [quadraId], references: [id])
 }
 
 

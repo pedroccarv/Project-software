@@ -307,49 +307,62 @@ app.post('/admin/cadastro-quadra', verifyAdmin, async (req, res) => {
   });
   
 // Endpoint to schedule a court
+// Endpoint para agendar uma quadra
+// Endpoint para agendar uma quadra
 app.post('/schedule', async (req, res) => {
     const { userId, courtId, dayOfWeek, startTime, endTime } = req.body;
-
+ 
     if (!userId || !courtId || !dayOfWeek || !startTime || !endTime) {
         return res.status(400).json({ error: 'Todos os campos são obrigatórios' });
     }
-
+ 
+    const parsedStartTime = parseInt(startTime, 10);
+    const parsedEndTime = parseInt(endTime, 10);
+ 
+    if (isNaN(parsedStartTime) || isNaN(parsedEndTime)) {
+        return res.status(400).json({ error: 'Os horários devem ser números válidos (ex: 9, 10, 11)' });
+    }
+ 
     try {
-        // Check if the court is available for the selected time and day
-        const existingSchedule = await prisma.schedule.findFirst({
+        // Verifica se já existe um agendamento no horário desejado
+        const existingSchedule = await prisma.agendamento.findFirst({
             where: {
-                courtId,
-                dayOfWeek,
-                startTime: {
-                    lte: endTime,
-                },
-                endTime: {
-                    gte: startTime,
-                },
+                quadraId: courtId,
+                diaSemana: dayOfWeek,
+                OR: [
+                    {
+                        horarioInicio: {
+                            lt: parsedEndTime,
+                        },
+                        horarioFim: {
+                            gt: parsedStartTime,
+                        },
+                    },
+                ],
             },
         });
-
+ 
         if (existingSchedule) {
             return res.status(400).json({ error: 'Quadra não disponível para o horário selecionado' });
         }
-
-        // Create the schedule
-        const schedule = await prisma.schedule.create({
+ 
+        const agendamento = await prisma.agendamento.create({
             data: {
                 userId,
-                courtId,
-                dayOfWeek,
-                startTime,
-                endTime,
+                quadraId: courtId,
+                diaSemana: dayOfWeek,
+                horarioInicio: parsedStartTime,
+                horarioFim: parsedEndTime,
             },
         });
-
-        res.status(201).json(schedule);
+ 
+        res.status(201).json(agendamento);
     } catch (error) {
         console.error('Erro ao agendar quadra:', error);
         res.status(500).json({ error: 'Erro ao agendar quadra' });
     }
-});
+ });
+
 app.get('/quadras', async (req, res) => {
     try {
       const courts = await prisma.quadra.findMany({
