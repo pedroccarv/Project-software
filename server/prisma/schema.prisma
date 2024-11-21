@@ -26,15 +26,16 @@ model Post {
   createdAt DateTime @default(now()) 
 }
 model Quadra {
-  id          String       @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  location    String
-  imageUrl    String
-  photos      String[]
-  horarios    Horario[]    @relation("HorariosQuadra")
-  diasSemana  DiaSemana[]
-  openingTime String
-  closingTime String
+  id           String       @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  location     String
+  imageUrl     String
+  photos       String[]
+  horarios     Horario[]    @relation("HorariosQuadra")
+  diasSemana   DiaSemana[]
+  openingTime  String
+  closingTime  String
+  numCourts    Int          // Novo campo para o número de quadras disponíveis
   agendamentos Agendamento[] // Adicionando o relacionamento de volta para agendamentos
 }
 
@@ -63,6 +64,7 @@ model Agendamento {
   diaSemana    DiaSemana
   horarioInicio Int
   horarioFim   Int
+  courtNumber   Int
   user         User     @relation(fields: [userId], references: [id])
   quadra       Quadra   @relation(fields: [quadraId], references: [id])
 }

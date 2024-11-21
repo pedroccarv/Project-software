@@ -252,62 +252,61 @@ app.put('/usuarios/:id', async (req, res) => {
 
 // Endpoint to create a new court
 app.post('/admin/cadastro-quadra', verifyAdmin, async (req, res) => {
-    const { name, location, photos, availableDays, openingTime, closingTime } = req.body;
+    const { name, location, photos, availableDays, openingTime, closingTime, numCourts } = req.body;
+    console.log('Dados recebidos no backend:', req.body);
+    console.log('Dados recebidos no backend:', { name, location, photos, availableDays, openingTime, closingTime, numCourts });
   
-    console.log('Dados recebidos no backend:', { name, location, photos, availableDays, openingTime, closingTime });
+    if (!numCourts || numCourts < 1) {
+      return res.status(400).json({ error: 'Número de quadras deve ser maior que zero.' });
+    }
   
     // Verificar se todos os campos são fornecidos e estão no formato correto
-    if (!name || !location || !Array.isArray(photos) || photos.length === 0 || !Array.isArray(availableDays) || availableDays.length === 0 || !openingTime || !closingTime) {
+    if (!name || !location || !Array.isArray(photos) || photos.length === 0 || !Array.isArray(availableDays) || availableDays.length === 0 || !openingTime || !closingTime || !numCourts || isNaN(numCourts) || numCourts <= 0) {
       console.log('Erro na validação dos dados recebidos');
       return res.status(400).json({ error: 'Todos os campos são obrigatórios e devem estar no formato correto' });
     }
   
     try {
-      // Criar a quadra no banco de dados
-      const court = await prisma.quadra.create({
+      // Criar o local com o número de quadras
+      const courtLocation = await prisma.quadra.create({
         data: {
-          name,
-          location,
-          imageUrl: photos[0], // Usando a primeira foto como `imageUrl` principal
-          photos,
-          diasSemana: availableDays,
-          openingTime,
-          closingTime,
-        },
-      });
-  
-      // Criar os horários para os dias disponíveis fornecidos
-      const horariosData = availableDays.flatMap((day) => {
-        const startHour = parseInt(openingTime.split(':')[0]);
-        const endHour = parseInt(closingTime.split(':')[0]);
-  
-        const horarios = [];
-        for (let hour = startHour; hour < endHour; hour++) {
-          horarios.push({
-            horarioInicio: hour,
-            horarioFim: hour + 1,
-            quadraId: court.id,
-            diaSemana: day,
-          });
+          name,              // Nome do local
+          location,          // Localização (endereço, etc)
+          imageUrl: photos[0],  // Usando a primeira foto como `imageUrl` principal
+          photos,            // Todas as fotos
+          diasSemana: availableDays, // Dias disponíveis para uso
+          openingTime,       // Hora de abertura
+          closingTime,       // Hora de fechamento
+          numCourts          // Usando numCourts aqui, conforme o seu modelo
         }
-  
-        return horarios;
       });
   
-      // Salvar os horários no banco de dados
-      await prisma.horario.createMany({
-        data: horariosData,
-      });
+      // Agora, criar as quadras (individualmente) com base no número de quadras informadas
+      const createdCourts = [];
+      for (let i = 0; i < numCourts; i++) {
+        const court = await prisma.quadra.create({
+          data: {
+            name: `${name} - Quadra ${i + 1}`, // Nome da quadra com número sequencial
+            location,
+            imageUrl: photos[0], // Usando a primeira foto como `imageUrl` principal
+            photos,
+            diasSemana: availableDays,
+            openingTime,
+            closingTime,
+            numCourts, // Cada quadra individualmente recebe "1" como número de quadras
+              // Associa a quadra ao local
+          }
+        });
+        createdCourts.push(court);
+      }
   
-      res.status(201).json(court);
+      res.status(201).json({ message: `${createdCourts.length} quadras criadas com sucesso`, createdCourts });
     } catch (error) {
       console.error('Erro ao criar quadra:', error);
       res.status(500).json({ error: 'Erro ao criar quadra' });
     }
   });
   
-// Endpoint to schedule a court
-// Endpoint para agendar uma quadra
 // Endpoint para agendar uma quadra
 app.post('/schedule', async (req, res) => {
     const { userId, courtId, dayOfWeek, startTime, endTime } = req.body;
@@ -341,7 +340,12 @@ app.post('/schedule', async (req, res) => {
                 ],
             },
         });
- 
+        console.log({
+            courtId,
+            dayOfWeek,
+            parsedStartTime,
+            parsedEndTime,
+          });
         if (existingSchedule) {
             return res.status(400).json({ error: 'Quadra não disponível para o horário selecionado' });
         }
@@ -355,7 +359,7 @@ app.post('/schedule', async (req, res) => {
                 horarioFim: parsedEndTime,
             },
         });
- 
+        console.log('Agendamentos existentes:', existingSchedule);
         res.status(201).json(agendamento);
     } catch (error) {
         console.error('Erro ao agendar quadra:', error);
