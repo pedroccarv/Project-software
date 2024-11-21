@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const navigation = [
     { name: 'Home', href: '/', current: false },
     { name: 'Convidar Amigos', href: '/convidar-amigos', current: false },
-    { name: 'Alugar', href: '/', current: false },
+    { name: 'Alugar', href: '/quadras', current: false },
     { name: 'Calendar', href: '/calendar', current: false },
 ];
 
