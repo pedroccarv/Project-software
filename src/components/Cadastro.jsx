@@ -1,14 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import '../styles/cadastro.css';
 import api from '../services/api';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import { Toaster, toast } from 'sonner'
+import '../styles/cadastro.css';
 
 function Cadastro() {
   const [email, setEmail] = useState('');
-  const [verifyEmail, setVerifyEmail] = useState('');
   const [password, setPassword] = useState('');
   const [nome, setNome] = useState('');
   const [age, setAge] = useState('');
@@ -21,7 +17,7 @@ function Cadastro() {
   const inputPassword = useRef()
   const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState(false);
-  
+
   const toggleSenhaVisivel = () => {
     setSenhaVisivel(!senhaVisivel);
   };
@@ -35,8 +31,8 @@ function Cadastro() {
         password: password,
         isAdmin: isAdmin  // Certifique-se de que está enviando "password"
       });
-      alert("Usuário criado com sucesso!"); 
-      navigate('/login');  
+      alert("Usuário criado com sucesso!");
+      navigate('/login');
     } catch (error) {
       console.error(error);
       alert("Erro ao criar usuário");
@@ -51,83 +47,132 @@ function Cadastro() {
   };
 
   return (
-    <div className="cadastro-page">
-      {/* Botão de Menu totalmente à esquerda */}
-      
-      {/* Contêiner de Cadastro centralizado */}
-      <div className="cadastro-container">
-        <a href="/"><img src="/src/assets/logo.png" alt="Logo" width="60%" /></a>
-        <h1>Crie uma conta</h1>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="Nome"
-            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-            ref={inputNome}
-            required
-          />
-          <input
-            type="number"
-            placeholder="Idade"
-            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-            value={age}
-            onChange={(e) => setAge(e.target.value)}
-            ref={inputAge}
-            required
-          />
-          <input 
-            type="email" 
-            placeholder="E-mail"
-            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            ref={inputEmail}
-            required 
-          />
-          <input 
-            type="email" 
-            placeholder="Verifique seu e-mail"
-            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-            value={verifyEmail}
-            onChange={(e) => setVerifyEmail(e.target.value)}
-            required
-          />
-          <div className="senha-container">
-            <input 
-              type={senhaVisivel ? "text" : "password"} 
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
+        <div className="flex justify-center">
+          <a href="/">
+            <img src="/src/assets/logo.png" alt="Logo" className="h-16 w-auto" />
+          </a>
+        </div>
+        <h1 className="text-2xl font-bold text-gray-900 text-center mt-4">Crie uma conta</h1>
+        <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
+          {/* Nome */}
+          <div>
+            <label htmlFor="nome" className="block text-sm font-medium text-gray-700">
+              Nome
+            </label>
+            <input
+              id="nome"
+              name="nome"
+              type="text"
+              placeholder="Nome"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-200 focus:ring-yellow-200 sm:text-sm"
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+              ref={inputNome}
+              required
+            />
+          </div>
+          {/* Idade */}
+          <div>
+            <label htmlFor="idade" className="block text-sm font-medium text-gray-700">
+              Idade
+            </label>
+            <input
+              id="idade"
+              name="idade"
+              type="number"
+              placeholder="Idade"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-200 focus:ring-yellow-200 sm:text-sm"
+              value={age}
+              onChange={(e) => setAge(e.target.value)}
+              ref={inputAge}
+              required
+            />
+          </div>
+          {/* E-mail */}
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              E-mail
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="E-mail"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-200 focus:ring-yellow-200 sm:text-sm"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              ref={inputEmail}
+              required
+            />
+          </div>
+          {/* Verificar E-mail */}
+          {/* Senha */}
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              Senha
+            </label>
+            <input
+              id="password"
+              name="password"
+              type={senhaVisivel ? "text" : "password"}
               placeholder="Senha"
-              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-200 focus:ring-yellow-200 sm:text-sm"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               ref={inputPassword}
               required
             />
-            {/* <span className="eye-icon absolute right-0" onClick={toggleSenhaVisivel}> */}
-              <FontAwesomeIcon onClick={toggleSenhaVisivel} className='absolute right-3 bottom-8' icon={senhaVisivel ? faEye : faEyeSlash} />
-            {/* </span> */}
           </div>
-          <div className="admin-checkbox">
-            <label>
-              <input
-                type="checkbox"
-                checked={isAdmin}
-                onChange={(e) => setIsAdmin(e.target.checked)}
-              />
+          {/* Checkbox Administrador */}
+          <div className="flex items-center">
+            <input
+              id="isAdmin"
+              name="isAdmin"
+              type="checkbox"
+              className="h-4 w-4 text-yellow-600 focus:ring-yellow-400 border-gray-300 rounded"
+              checked={isAdmin}
+              onChange={(e) => setIsAdmin(e.target.checked)}
+            />
+            <label htmlFor="isAdmin" className="ml-2 block text-sm text-gray-900">
               Desejo me cadastrar como administrador
             </label>
           </div>
-          <button type="submit" onClick={createUsers} className="btn-cadastrar">Criar perfil gratuito</button>
+          {/* Botão de Cadastro */}
+          <div>
+            <button
+              type="submit"
+              onClick={createUsers}
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-yellow-500 hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400"
+            >
+              Criar perfil gratuito
+            </button>
+          </div>
         </form>
-        <p className="terms">
-          Ao se registrar, você está de acordo com nossos <a href="#">termos e condições</a> e confirma estar ciente de nossa <a href="#">política de privacidade</a>.
+        {/* Links e Termos */}
+        <p className="mt-6 text-center text-sm text-gray-500">
+          Ao se registrar, você está de acordo com nossos{" "}
+          <a href="#" className="font-medium text-yellow-400 hover:text-yellow-400">
+            termos e condições
+          </a>{" "}
+          e confirma estar ciente de nossa{" "}
+          <a href="#" className="font-medium text-yellow-400 hover:text-yellow-400">
+            política de privacidade
+          </a>.
         </p>
-        <p className="login">
-          Já tem uma conta? <Link to="/login">Faça seu login!</Link>
+        <p className="mt-4 text-center text-sm text-gray-500">
+          Já tem uma conta?{" "}
+          <Link
+            to="/login"
+            className="font-medium text-yellow-400 hover:text-yellow-400"
+          >
+            Faça seu login!
+          </Link>
         </p>
       </div>
     </div>
+
   );
 }
 

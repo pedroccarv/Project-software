@@ -29,8 +29,7 @@ model Quadra {
   id           String       @id @default(auto()) @map("_id") @db.ObjectId
   name         String
   location     String
-  imageUrl     String
-  photos       String[]
+  imageUrl     String?
   horarios     Horario[]    @relation("HorariosQuadra")
   diasSemana   DiaSemana[]
   openingTime  String

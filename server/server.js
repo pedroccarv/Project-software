@@ -252,16 +252,16 @@ app.put('/usuarios/:id', async (req, res) => {
 
 // Endpoint to create a new court
 app.post('/admin/cadastro-quadra', verifyAdmin, async (req, res) => {
-    const { name, location, photos, availableDays, openingTime, closingTime, numCourts } = req.body;
+    const { name, location, availableDays, openingTime, closingTime, numCourts } = req.body;
     console.log('Dados recebidos no backend:', req.body);
-    console.log('Dados recebidos no backend:', { name, location, photos, availableDays, openingTime, closingTime, numCourts });
+    console.log('Dados recebidos no backend:', { name, location, availableDays, openingTime, closingTime, numCourts });
   
     if (!numCourts || numCourts < 1) {
       return res.status(400).json({ error: 'Número de quadras deve ser maior que zero.' });
     }
   
     // Verificar se todos os campos são fornecidos e estão no formato correto
-    if (!name || !location || !Array.isArray(photos) || photos.length === 0 || !Array.isArray(availableDays) || availableDays.length === 0 || !openingTime || !closingTime || !numCourts || isNaN(numCourts) || numCourts <= 0) {
+    if (!name || !location || !Array.isArray(availableDays) || availableDays.length === 0 || !openingTime || !closingTime || !numCourts || isNaN(numCourts) || numCourts <= 0) {
       console.log('Erro na validação dos dados recebidos');
       return res.status(400).json({ error: 'Todos os campos são obrigatórios e devem estar no formato correto' });
     }
@@ -272,8 +272,6 @@ app.post('/admin/cadastro-quadra', verifyAdmin, async (req, res) => {
         data: {
           name,              // Nome do local
           location,          // Localização (endereço, etc)
-          imageUrl: photos[0],  // Usando a primeira foto como `imageUrl` principal
-          photos,            // Todas as fotos
           diasSemana: availableDays, // Dias disponíveis para uso
           openingTime,       // Hora de abertura
           closingTime,       // Hora de fechamento
@@ -288,8 +286,6 @@ app.post('/admin/cadastro-quadra', verifyAdmin, async (req, res) => {
           data: {
             name: `${name} - Quadra ${i + 1}`, // Nome da quadra com número sequencial
             location,
-            imageUrl: photos[0], // Usando a primeira foto como `imageUrl` principal
-            photos,
             diasSemana: availableDays,
             openingTime,
             closingTime,
