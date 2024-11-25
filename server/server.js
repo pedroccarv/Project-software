@@ -305,9 +305,9 @@ app.post('/admin/cadastro-quadra', verifyAdmin, async (req, res) => {
   
 // Endpoint para agendar uma quadra
 app.post('/schedule', async (req, res) => {
-    const { userId, courtId, dayOfWeek, startTime, endTime, courtNumber } = req.body;
+    const { userId, courtId, dayOfWeek, startTime, endTime, courtNumber, date } = req.body;
 
-    if (!userId || !courtId || !dayOfWeek || !startTime || !endTime || courtNumber === undefined) {
+    if (!userId || !courtId || !dayOfWeek || !startTime || !endTime || courtNumber === undefined || !date) {
         return res.status(400).json({ error: 'Todos os campos são obrigatórios' });
     }
 
@@ -319,11 +319,12 @@ app.post('/schedule', async (req, res) => {
     }
 
     try {
-        // Verifica se já existe um agendamento no horário desejado
+        // Verifica se já existe um agendamento no horário desejado para a data selecionada
         const existingSchedule = await prisma.agendamento.findFirst({
             where: {
                 quadraId: courtId,
                 diaSemana: dayOfWeek,
+                date: new Date(date),  // Adicionando a verificação de data
                 OR: [
                     {
                         horarioInicio: {
@@ -336,12 +337,7 @@ app.post('/schedule', async (req, res) => {
                 ],
             },
         });
-        console.log({
-            courtId,
-            dayOfWeek,
-            parsedStartTime,
-            parsedEndTime,
-        });
+
         if (existingSchedule) {
             return res.status(400).json({ error: 'Quadra não disponível para o horário selecionado' });
         }
@@ -353,16 +349,18 @@ app.post('/schedule', async (req, res) => {
                 diaSemana: dayOfWeek,
                 horarioInicio: parsedStartTime,
                 horarioFim: parsedEndTime,
-                courtNumber,  // Incluindo o campo courtNumber
+                courtNumber,
+                date: new Date(date),  // Salvando a data no banco
             },
         });
-        console.log('Agendamento criado:', agendamento);
+
         res.status(201).json(agendamento);
     } catch (error) {
         console.error('Erro ao agendar quadra:', error);
         res.status(500).json({ error: 'Erro ao agendar quadra' });
     }
 });
+
 
 app.get('/quadras', async (req, res) => {
     try {
@@ -408,30 +406,32 @@ app.get('/quadras/:id', async (req, res) => {
 });
 // Endpoint para buscar agendamentos de um usuário
 app.get('/appointments', async (req, res) => {
-    const { userId } = req.query;
+    const { userId } = req.query; // Pegando o userId da query string
 
     if (!userId) {
-        return res.status(400).json({ error: 'User ID é obrigatório' });
+        return res.status(400).json({ error: 'UserId é obrigatório' });
     }
 
     try {
         const appointments = await prisma.agendamento.findMany({
-            where: { userId: userId },
+            where: { userId },
             include: {
-                quadra: true, // Inclui as informações da quadra associada
-            },
-            orderBy: {
-                horarioInicio: 'asc', // Ordena os agendamentos pelo horário de início
+                quadra: true, // Incluindo os dados da quadra
             },
         });
 
-        res.status(200).json(appointments);
+        // Retornando os agendamentos com a data formatada (ISO 8601) 
+        const appointmentsWithFormattedDate = appointments.map((appointment) => ({
+            ...appointment,
+            date: appointment.date.toISOString(), // Garantindo que a data esteja formatada
+        }));
+
+        res.json(appointmentsWithFormattedDate);
     } catch (error) {
         console.error('Erro ao buscar agendamentos:', error);
         res.status(500).json({ error: 'Erro ao buscar agendamentos' });
     }
 });
-
 // Inicializa o servidor
 app.listen(3000, () => {
     console.log('Servidor rodando na porta 3000');

@@ -52,7 +52,10 @@ function AppointmentsPage() {
                         >
                             <h2 className="text-xl font-semibold">{appointment.quadra.name}</h2>
                             <p className="text-gray-600">Local: {appointment.quadra.location}</p>
-                            <p className="text-gray-600">Data: {new Date(appointment.horarioInicio).toLocaleDateString()}</p>
+                            {/* Exibindo a data formatada corretamente */}
+                            <p className="text-gray-600">
+                                Data: {new Date(appointment.date).toLocaleDateString('pt-BR')}
+                            </p>
                             <p className="text-gray-600">
                                 Horário: {appointment.horarioInicio}hr - {appointment.horarioFim}hr
                             </p>

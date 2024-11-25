@@ -1,14 +1,15 @@
-import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { List, Bell, X, UserCircle } from "@phosphor-icons/react"
-import Logo from "../assets/logo.png"
+import { Disclosure, Menu } from '@headlessui/react';
+import { List, Bell, X, UserCircle } from "@phosphor-icons/react";
+import Logo from "../assets/logo.png";
 import { useAuth } from '../services/AuthContext'; // Importando o contexto de autenticação
 import { useNavigate } from 'react-router-dom';
 
-const navigation = [
+let navigation = [
     { name: 'Home', href: '/', current: false },
-    { name: 'Convidar Amigos', href: '/convidar-amigos', current: false },
     { name: 'Alugar', href: '/quadras', current: false },
-    { name: 'Calendar', href: '/calendar', current: false },
+    { name: 'Convidar Amigos', href: '/convidar-amigos', current: false },
+    { name: 'Agendamentos', href: '/agendamentos', current: false },
+    { name: 'Usuarios', href: '/usuario', current: false },
 ];
 
 function classNames(...classes) {
@@ -18,6 +19,12 @@ function classNames(...classes) {
 export default function NavBar() {
     const { user, logout } = useAuth(); // Obtendo informações do usuário logado e a função de logout
     const navigate = useNavigate();
+
+    // Adicionar item de navegação "Admin" se o usuário for administrador e se ele ainda não existir
+    if (user?.isAdmin && !navigation.some(item => item.name === 'Admin')) {
+        navigation = [...navigation, { name: 'Admin', href: '/admin/cadastro-quadra', current: false }];
+    }
+
     return (
         <Disclosure as="nav" className="p-4 shadow-md">
             <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -68,10 +75,11 @@ export default function NavBar() {
                     </div>
 
                     {/* Botões de notificações e perfil */}
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 ">
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                         {/* Botão de notificações */}
                         <button
                             type="button"
+                            onClick={() => navigate('/notificacoes')} // Adicionando a navegação para /notificacoes
                             className="relative rounded-full p-1 "
                         >
                             <span className="sr-only">Visualizar notificações</span>
@@ -86,7 +94,7 @@ export default function NavBar() {
                             <div>
                                 <Menu.Button className="relative flex items-center rounded-full p-1 text-sm hover:text-orange-500 hover:underline">
                                     <span className="sr-only">Abrir menu de usuário</span>
-                                    <UserCircle  className="h-6 w-6" />
+                                    <UserCircle className="h-6 w-6" />
                                     <span className="ml-2">{user?.name || "Usuário"}</span>
                                 </Menu.Button>
                             </div>
@@ -137,6 +145,5 @@ export default function NavBar() {
                 </div>
             </Disclosure.Panel>
         </Disclosure>
-
     );
 }

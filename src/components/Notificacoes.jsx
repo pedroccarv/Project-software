@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import emailjs from "emailjs-com";
 import "../styles/Notificacoes.css";
-import { Link } from "react-router-dom";
+import NavBar from './NavBar';
 
 function Notificacoes() {
   const [email, setEmail] = useState("");
@@ -14,7 +14,7 @@ function Notificacoes() {
   const handleSendEmail = async (e) => {
     e.preventDefault();
 
-    if (email == "" || subject == "" || message == "") {
+    if (email === "" || subject === "" || message === "") {
       setStatus("Preencha todos os campos");
       return;
     }
@@ -29,7 +29,7 @@ function Notificacoes() {
       .then(
         (result) => {
           console.log("Email foi enviado com sucesso!");
-          setStatus(`Notificação enviado para ${email}`, result.status);
+          setStatus(`Notificação enviada para ${email}`);
           setEmail("");
           setMessage("");
           setSubject("");
@@ -39,75 +39,107 @@ function Notificacoes() {
           setStatus(`Erro ao enviar a notificação: ${error.message}`);
         }
       );
-
-    // try {
-    //   const response = await fetch('/api/send-email', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({ email, subject, message }),
-    //   });
-
-    //   if (response.ok) {
-    //     setStatus('E-mail enviado com sucesso!');
-    //   } else {
-    //     setStatus('Falha ao enviar o e-mail.');
-    //   }
-    // } catch (error) {
-    //   setStatus('Erro ao enviar o e-mail.');
-    // }
   };
 
   return (
-    <div className="rotas">
-    <Link to="/login" className="link-rota">Login</Link>
-    <Link to="/cadastro" className="link-rota">Cadastro</Link>
-    <Link to="/editar-perfil" className="link-rota">Editar Perfil</Link>
-    <Link to="/mapa" className="link-rota">Mapa</Link>
-    <Link to="/favoritar-partida" className="link-rota">Partidas Favoritas</Link>
-    <Link to="/detalhes-partida" className="link-rota">Detalhes Partidas</Link>
-    <Link to="/cadastro-partida" className="link-rota">Cadastro Partidas</Link>
-    <Link to="/historico-partidas" className="link-rota">Historico Partidas</Link>
-    <Link to="/pagamento" className="link-rota">Pagamento</Link>
-    <Link to="/contato" className="link-rota">Contato</Link>
-    <Link to="/historico-conquistas" className="link-rota">Historico  conquistas</Link>
-    <Link to="/notificacoes" className="link-rota">Notificacoes</Link>
-    <Link to="/chat" className="link-rota">Chat</Link>
-    <Link to="/upload-imagem" className="link-rota">Imagem</Link>
-    <Link to="/avaliacao-partida" className="link-rota">Avaliacao partida</Link>
-    <Link to="/convidar-amigos" className="link-rota">Convidar amigos</Link>
-    <div>
-      <h1>Enviar Notificação por E-mail</h1>
-      <form ref={form} onSubmit={handleSendEmail}>
-        <input
-          type="email"
-          name="email"
-          placeholder="E-mail"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          name="assunto"
-          placeholder="Assunto"
-          value={subject}
-          onChange={(e) => setSubject(e.target.value)}
-          required
-        />
-        <textarea
-          placeholder="Mensagem"
-          name="message"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          required
-        />
-        <button type="submit">Enviar</button>
-      </form>
-      {status && <p>{status}</p>}
-    </div>
-    </div>
+    <>
+      <NavBar />
+      <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-md space-y-8 bg-white p-6 rounded-lg shadow-lg">
+          <div className="sm:mx-auto sm:w-full sm:max-w-md">
+            <h2 className="text-center text-2xl font-bold tracking-tight text-gray-900">
+              Enviar Notificação por E-mail
+            </h2>
+          </div>
+          <form ref={form} onSubmit={handleSendEmail} className="space-y-6">
+            {/* Campo de E-mail */}
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-900"
+              >
+                Endereço de E-mail
+              </label>
+              <div className="mt-2">
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-yellow-500 sm:text-sm"
+                  placeholder="Digite o e-mail do destinatário"
+                  aria-label="E-mail"
+                />
+              </div>
+            </div>
+
+            {/* Campo de Assunto */}
+            <div>
+              <label
+                htmlFor="assunto"
+                className="block text-sm font-medium text-gray-900"
+              >
+                Assunto
+              </label>
+              <div className="mt-2">
+                <input
+                  id="assunto"
+                  name="assunto"
+                  type="text"
+                  required
+                  value={subject}
+                  onChange={(e) => setSubject(e.target.value)}
+                  className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-yellow-500 sm:text-sm"
+                  placeholder="Digite o assunto"
+                  aria-label="Assunto"
+                />
+              </div>
+            </div>
+
+            {/* Campo de Mensagem */}
+            <div>
+              <label
+                htmlFor="message"
+                className="block text-sm font-medium text-gray-900"
+              >
+                Mensagem
+              </label>
+              <div className="mt-2">
+                <textarea
+                  id="message"
+                  name="message"
+                  required
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-yellow-500 sm:text-sm"
+                  placeholder="Digite a mensagem"
+                  rows="4"
+                  aria-label="Mensagem"
+                />
+              </div>
+            </div>
+
+            {/* Botão de Enviar */}
+            <div>
+              <button
+                type="submit"
+                className="flex w-full justify-center rounded-md bg-yellow-500 p-2 text-sm font-semibold text-white shadow-sm hover:bg-yellow-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-500"
+              >
+                Enviar
+              </button>
+            </div>
+          </form>
+
+          {status && (
+            <p className="mt-4 text-center text-sm text-gray-500">
+              {status}
+            </p>
+          )}
+        </div>
+      </div>
+    </>
   );
 }
 

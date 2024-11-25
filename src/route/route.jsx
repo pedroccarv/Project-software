@@ -3,8 +3,6 @@ import Login from '../components/Login';
 import Cadastro from '../components/Cadastro';
 import EditarPerfil from '../components/EditarPerfil';
 import Partidas from '../models/Partidas';
-import Pagamento from '../pages/Pagamento';
-import Contato from '../pages/Contato';
 import Notificacoes from '../components/Notificacoes';
 import ConvidarAmigos from '../components/ConvidarAmigos';
 import Usuario from '../components/Usuario';
@@ -44,22 +42,6 @@ function AppRoutes() {
           }
         />
         {/* Funcionalidades adicionais */}
-        <Route
-          path="/pagamento"
-          element={
-            <PrivateRoute>
-              <Pagamento />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/contato"
-          element={
-            <PrivateRoute>
-              <Contato />
-            </PrivateRoute>
-          }
-        />
         <Route
           path="/notificacoes"
           element={

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import api from '../services/api';
-
+import NavBar from "./NavBar";
 function Home() {
     const [users, setUsers] = useState([]);
     const [searchName, setSearchName] = useState('');  // Estado para o campo de pesquisa
@@ -25,6 +25,8 @@ function Home() {
     }, [searchName]);  // Atualiza a lista de jogadores quando o valor de 'searchName' mudar
 
     return (
+        <>
+        <NavBar />
         <div className="container">
             <form>
                 <h1>Jogadores</h1>
@@ -47,6 +49,7 @@ function Home() {
                 </div>
             ))}
         </div>
+        </>
     );
 }
 

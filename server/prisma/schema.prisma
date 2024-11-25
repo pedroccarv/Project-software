@@ -63,6 +63,7 @@ model Agendamento {
   horarioInicio Int
   horarioFim   Int
   courtNumber   Int
+  date         DateTime
   user         User     @relation(fields: [userId], references: [id])
   quadra       Quadra   @relation(fields: [quadraId], references: [id])
 }
