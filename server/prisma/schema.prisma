@@ -29,13 +29,12 @@ model Quadra {
   id           String       @id @default(auto()) @map("_id") @db.ObjectId
   name         String
   location     String
-  imageUrl     String?
   horarios     Horario[]    @relation("HorariosQuadra")
   diasSemana   DiaSemana[]
   openingTime  String
   closingTime  String
-  numCourts    Int          // Novo campo para o número de quadras disponíveis
-  agendamentos Agendamento[] // Adicionando o relacionamento de volta para agendamentos
+  numCourts    Int          // Número de quadras disponíveis
+  agendamentos Agendamento[] // Relacionamento com agendamentos
 }
 
 enum DiaSemana {

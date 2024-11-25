@@ -22,13 +22,14 @@ function CourtsList() {
     'QUARTA-FEIRA': 'QUARTA',
     'QUINTA-FEIRA': 'QUINTA',
     'SEXTA-FEIRA': 'SEXTA',
-    'SABADO': 'SABADO',
+    'SABADO': 'SABADO'
   };
 
   useEffect(() => {
     const fetchCourts = async () => {
       try {
         const response = await api.get('/quadras');
+        console.log('Resposta da API:', response.data); // Verificando dados retornados
         if (response.data && Array.isArray(response.data)) {
           setCourts(response.data);
         } else {
@@ -49,19 +50,48 @@ function CourtsList() {
         .toLocaleDateString('pt-BR', { weekday: 'long' })
         .toUpperCase()
         .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '');
-
+        .replace(/[̀-ͯ]/g, ''); // Normaliza o nome do dia
+  
+      console.log('Data selecionada:', selectedDate);
+      console.log('Dia da semana:', dayOfWeek);
+  
       const enumDay = daysMap[dayOfWeek];
+      console.log('Enum do dia da semana:', enumDay);
+  
       if (enumDay) {
-        const times = selectedCourt.horarios.filter(
-          (horario) => horario.diaSemana === enumDay
+        // Função getAvailableHours
+        const getAvailableHours = (openingTime, closingTime, selectedDay, diasSemana) => {
+          if (!diasSemana.includes(selectedDay)) {
+            return []; // Se não estiver no array de dias disponíveis, retorna uma lista vazia
+          }
+  
+          const openingHour = parseInt(openingTime.split(':')[0], 10);
+          const closingHour = parseInt(closingTime.split(':')[0], 10);
+          const availableHours = [];
+          
+          for (let hour = openingHour; hour < closingHour; hour++) {
+            availableHours.push(`${hour}:00`);
+          }
+          
+          return availableHours;
+        };
+  
+        // Calcula os horários disponíveis para a quadra selecionada
+        const availableTimesForSelectedDay = getAvailableHours(
+          selectedCourt.openingTime,
+          selectedCourt.closingTime,
+          enumDay,
+          selectedCourt.diasSemana
         );
-        setAvailableTimes(times);
+  
+        console.log('Horários disponíveis para o dia selecionado:', availableTimesForSelectedDay);
+        setAvailableTimes(availableTimesForSelectedDay);
       } else {
-        setAvailableTimes([]);
+        console.warn('Dia da semana inválido:', dayOfWeek);
+        setAvailableTimes([]); // Se o dia não for válido, limpa os horários
       }
     }
-  }, [selectedCourt, selectedDate]);
+  }, [selectedCourt, selectedDate]); // Depende de selectedCourt e selectedDate
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -70,6 +100,7 @@ function CourtsList() {
   };
 
   const handleSelectCourt = (court) => {
+    console.log('Quadra selecionada:', court); // Debug para verificar quadra selecionada
     setSelectedCourt(court);
     setSelectedDate(new Date());
     setAvailableTimes([]);
@@ -81,29 +112,44 @@ function CourtsList() {
       setErrorMessage('Por favor, selecione a quadra, data e horário.');
       return;
     }
-
+  
     try {
       const [startTime, endTime] = selectedTime.split('-');
       const dayOfWeek = selectedDate
         .toLocaleDateString('pt-BR', { weekday: 'long' })
         .toUpperCase()
         .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '');
-
+        .replace(/[̀-ͯ]/g, ''); // Normaliza o nome do dia
+  
       const enumDay = daysMap[dayOfWeek];
       if (!enumDay) {
         setErrorMessage('Dia da semana inválido.');
         return;
       }
-
-      await api.post('/schedule', {
+  
+      // Formatar a data para envio no formato ISO
+      const formattedDate = selectedDate.toISOString();  // Aqui garantimos que a data seja uma string ISO
+  
+      console.log('Agendamento:', {
         userId: user.id,
         courtId: selectedCourt.id,
+        courtNumber: selectedCourt.numCourts,
         dayOfWeek: enumDay,
         startTime: startTime.trim(),
         endTime: endTime.trim(),
+        date: formattedDate,  // Passando a data formatada
       });
-
+  
+      await api.post('/schedule', {
+        userId: user.id,
+        courtId: selectedCourt.id,
+        courtNumber: selectedCourt.numCourts,
+        dayOfWeek: enumDay,
+        startTime: startTime.trim(),
+        endTime: endTime.trim(),
+        date: formattedDate,  // Enviando a data correta
+      });
+  
       setSuccessMessage('Quadra agendada com sucesso!');
       setErrorMessage('');
       setTimeout(() => setSuccessMessage(''), 5000);
@@ -135,7 +181,6 @@ function CourtsList() {
                 </button>
 
                 {selectedCourt?.id === court.id && (
-                  
                   <div className="mt-4">
                     <h3 className="font-bold">Selecionar Data</h3>
                     <DatePicker
@@ -146,34 +191,33 @@ function CourtsList() {
                       className="mt-2 border rounded w-full p-2"
                     />
                     {availableTimes.length > 0 ? (
-                      <div className="mt-4">
-                        <h3 className="font-bold">Horários Disponíveis</h3>
-                        <div className="flex flex-wrap gap-2">
-                          {availableTimes.map((horario) => (
-                            <button
-                              key={horario.id}
-                              onClick={() =>
-                                setSelectedTime(
-                                  `${horario.horarioInicio} - ${horario.horarioFim}`
-                                )
-                              }
-                              className={`py-1 px-2 border rounded ${
-                                selectedTime ===
-                                `${horario.horarioInicio} - ${horario.horarioFim}`
-                                  ? 'bg-blue-500 text-white'
-                                  : 'bg-gray-100'
-                              }`}
-                            >
-                              {horario.horarioInicio} - {horario.horarioFim}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    ) : (
-                      <p className="text-red-500 mt-2">
-                        Não há horários disponíveis para o dia selecionado.
-                      </p>
-                    )}
+  <div className="mt-4">
+    <h3 className="font-bold">Horários Disponíveis</h3>
+    <div className="flex flex-wrap gap-2">
+      {availableTimes.map((horario, index) => (
+        <button
+          key={index}
+          onClick={() =>
+            setSelectedTime(`${horario} - ${parseInt(horario.split(':')[0], 10) + 1}:00`)
+          }
+          className={`py-1 px-2 border rounded ${
+            selectedTime === `${horario} - ${parseInt(horario.split(':')[0], 10) + 1}:00`
+              ? 'bg-blue-500 text-white'
+              : 'bg-gray-100'
+          }`}
+        >
+          {horario} - {parseInt(horario.split(':')[0], 10) + 1}:00
+        </button>
+      ))}
+    </div>
+  </div>
+) : (
+  <p className="text-red-500 mt-2">
+    {selectedCourt && selectedDate
+      ? 'Não há horários disponíveis para o dia selecionado.'
+      : 'Selecione uma quadra e uma data para ver os horários disponíveis.'}
+  </p>
+)}
                     <button
                       onClick={handleSchedule}
                       disabled={!selectedDate || !selectedTime}

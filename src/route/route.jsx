@@ -13,6 +13,7 @@ import Pagina from '../components/LandingPage'
 import CadastroQuadra from '../components/CadastroQuadra'
 import Quadras from '../components/Quadras'
 import AdminRoute from '../route/adminRoute';
+import Agendamentos from '../components/Agendamentos'
 
 function AppRoutes() {
   return (
@@ -97,6 +98,14 @@ function AppRoutes() {
           element={
             <PrivateRoute>
               <Quadras />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/agendamentos"
+          element={
+            <PrivateRoute>
+              <Agendamentos />
             </PrivateRoute>
           }
         />
