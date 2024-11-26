@@ -25,6 +25,10 @@ export default function NavBar() {
         navigation = [...navigation, { name: 'Admin', href: '/admin/cadastro-quadra', current: false }];
     }
 
+    const handleLoginClick = () => {
+        navigate('/login');
+    };
+
     return (
         <Disclosure as="nav" className="p-4 shadow-md">
             <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -90,35 +94,44 @@ export default function NavBar() {
                         </button>
 
                         {/* Menu de perfil */}
-                        <Menu as="div" className="relative ml-3">
-                            <div>
-                                <Menu.Button className="relative flex items-center rounded-full p-1 text-sm hover:text-orange-500 hover:underline">
-                                    <span className="sr-only">Abrir menu de usuário</span>
-                                    <UserCircle className="h-6 w-6" />
-                                    <span className="ml-2">{user?.name || "Usuário"}</span>
-                                </Menu.Button>
-                            </div>
-                            <Menu.Items
-                                className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                        {user ? (
+                            <Menu as="div" className="relative ml-3">
+                                <div>
+                                    <Menu.Button className="relative flex items-center rounded-full p-1 text-sm hover:text-orange-500 hover:underline">
+                                        <span className="sr-only">Abrir menu de usuário</span>
+                                        <UserCircle className="h-6 w-6" />
+                                        <span className="ml-2">{user.name}</span>
+                                    </Menu.Button>
+                                </div>
+                                <Menu.Items
+                                    className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                >
+                                    <Menu.Item>
+                                        <button
+                                            onClick={() => navigate("/editar-perfil")}
+                                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                        >
+                                            Editar Perfil
+                                        </button>
+                                    </Menu.Item>
+                                    <Menu.Item>
+                                        <button
+                                            onClick={logout}
+                                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                        >
+                                            Sair
+                                        </button>
+                                    </Menu.Item>
+                                </Menu.Items>
+                            </Menu>
+                        ) : (
+                            <button
+                                onClick={handleLoginClick}
+                                className="text-sm font-medium text-gray-800 hover:text-orange-500"
                             >
-                                <Menu.Item>
-                                    <button
-                                        onClick={() => navigate("/editar-perfil")}
-                                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                    >
-                                        Editar Perfil
-                                    </button>
-                                </Menu.Item>
-                                <Menu.Item>
-                                    <button
-                                        onClick={logout}
-                                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                    >
-                                        Sair
-                                    </button>
-                                </Menu.Item>
-                            </Menu.Items>
-                        </Menu>
+                                Entrar
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>

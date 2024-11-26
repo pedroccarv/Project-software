@@ -432,6 +432,44 @@ app.get('/appointments', async (req, res) => {
         res.status(500).json({ error: 'Erro ao buscar agendamentos' });
     }
 });
+
+// Endpoint para excluir um agendamento
+// Endpoint para excluir um agendamento
+app.delete('/appointments/:appointmentId', async (req, res) => {
+    const { appointmentId } = req.params;  // Recebe o ID da URL
+
+    // Converte para string se não for
+    const appointmentIdString = String(appointmentId);
+
+    if (!appointmentIdString) {
+        return res.status(400).json({ error: 'appointmentId é obrigatório' });
+    }
+
+    try {
+        // Busca o agendamento pelo ID, agora passado como string
+        const appointment = await prisma.agendamento.findUnique({
+            where: {
+                id: appointmentIdString,  // Certifique-se de que é uma string
+            },
+        });
+
+        if (!appointment) {
+            return res.status(404).json({ error: 'Agendamento não encontrado' });
+        }
+
+        // Exclui o agendamento
+        await prisma.agendamento.delete({  // Corrigido de appointment para agendamento
+            where: {
+                id: appointmentIdString,  // Também passando o ID como string
+            },
+        });
+
+        res.status(200).json({ message: 'Agendamento excluído com sucesso' });
+    } catch (error) {
+        console.error('Erro ao excluir agendamento:', error);
+        res.status(500).json({ error: 'Erro ao excluir agendamento' });
+    }
+});
 // Inicializa o servidor
 app.listen(3000, () => {
     console.log('Servidor rodando na porta 3000');

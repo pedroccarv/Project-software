@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../services/AuthContext'; // Supondo que você tenha o AuthContext configurado para obter o userId
 import api from '../services/api'; // Supondo que você tenha um arquivo api.js para configurar suas requisições
+import NavBar from './NavBar';
 
 function AppointmentsPage() {
     const { user } = useAuth(); // Obtém o usuário autenticado
@@ -30,6 +31,20 @@ function AppointmentsPage() {
         fetchAppointments();
     }, [user]);
 
+    // Função para excluir um agendamento
+    const handleDelete = async (appointmentId) => {
+        try {
+            const appointmentIdString = String(appointmentId);  // Garantir que seja uma string
+            await api.delete(`/appointments/${appointmentIdString}`);
+            // Remove o agendamento excluído da lista localmente
+            setAppointments((prevAppointments) =>
+                prevAppointments.filter((appointment) => appointment.id !== appointmentIdString)
+            );
+        } catch (error) {
+            console.error('Erro ao excluir agendamento:', error);
+            setError('Erro ao excluir agendamento');
+        }
+    };    
     if (loading) {
         return <div>Carregando agendamentos...</div>;
     }
@@ -37,8 +52,9 @@ function AppointmentsPage() {
     if (error) {
         return <div>{error}</div>;
     }
-
     return (
+        <>
+        <NavBar />
         <div className="p-6">
             <h1 className="text-2xl font-bold mb-6">Meus Agendamentos</h1>
             {appointments.length === 0 ? (
@@ -59,11 +75,19 @@ function AppointmentsPage() {
                             <p className="text-gray-600">
                                 Horário: {appointment.horarioInicio}hr - {appointment.horarioFim}hr
                             </p>
+                            {/* Botão de excluir */}
+                            <button
+                                onClick={() => handleDelete(appointment.id)}
+                                className="mt-4 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+                            >
+                                Excluir
+                            </button>
                         </div>
                     ))}
                 </div>
             )}
         </div>
+        </>
     );
 }
 

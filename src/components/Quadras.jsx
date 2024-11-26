@@ -175,7 +175,7 @@ function CourtsList() {
                 <p className="text-gray-600">Local: {court.location}</p>
                 <button
                   onClick={() => handleSelectCourt(court)}
-                  className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+                  className="mt-4 bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600"
                 >
                   Selecionar Quadra
                 </button>

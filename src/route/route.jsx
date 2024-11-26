@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from '../components/Login';
 import Cadastro from '../components/Cadastro';
 import EditarPerfil from '../components/EditarPerfil';
-import Partidas from '../models/Partidas';
 import Notificacoes from '../components/Notificacoes';
 import ConvidarAmigos from '../components/ConvidarAmigos';
 import Usuario from '../components/Usuario';
@@ -29,15 +28,6 @@ function AppRoutes() {
           element={
             <PrivateRoute>
               <EditarPerfil />
-            </PrivateRoute>
-          }
-        />
-        {/* Rotas relacionadas a partidas */}
-        <Route
-          path="/partidas"
-          element={
-            <PrivateRoute>
-              <Partidas />
             </PrivateRoute>
           }
         />
